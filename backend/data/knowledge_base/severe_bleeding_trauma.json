@@ -1,0 +1,27 @@
+{
+  "id": "kb-trauma-003",
+  "document_title": "Stop The Bleed & American Red Cross Severe Hemorrhage Control",
+  "source_name": "American College of Surgeons / Red Cross",
+  "source_url": "https://www.stopthebleed.org/guidelines/",
+  "publication_date": "2023-11-10",
+  "category": "severe_bleeding",
+  "contraindications": [
+    "Do NOT apply a tourniquet over a joint (elbow or knee).",
+    "Do NOT loosen or remove a tourniquet once tightened.",
+    "Do NOT remove embedded impaled objects; stabilize them in place."
+  ],
+  "sections": [
+    {
+      "section_name": "Life-Threatening External Hemorrhage & Direct Pressure",
+      "keywords": ["bleeding", "spurting blood", "deep cut", "stab wound", "blood pooling", "arterial bleeding", "pressure bandage", "wound packing", "tourniquet"],
+      "content": "Life-threatening bleeding is identified by blood spurting from a wound, continuous soaking of clothing or bandages, pooling of blood on the ground, or bleeding in a victim who is confused or pale. Call 911 immediately. Expose the wound. Apply firm, continuous direct pressure directly over the bleeding site with a clean cloth, gauze, or bare hands if nothing else is available. Lean your full body weight onto the wound. Maintain constant uninterrupted pressure. If bleeding is from an arm or leg and direct pressure fails to control it, or if bleeding is catastrophic, apply a commercial windlass tourniquet 2 to 3 inches above the wound (never over a joint). Tighten the windlass rod until bright red bleeding stops and distal pulse is absent. Lock rod and record application time on forehead or strap.",
+      "visual_guide_key": "pressure_bandage"
+    },
+    {
+      "section_name": "Impaled Object and Penetrating Trauma Management",
+      "keywords": ["knife wound", "puncture", "impaled object", "metal stick in flesh", "embedded object"],
+      "content": "If a sharp object (knife, glass, nail, rebar) remains embedded in the patient's body, NEVER attempt to pull it out, as it is currently tamponading damaged blood vessels. Control bleeding around the object by applying pressure on either side. Stabilize the impaled object using rolled bandages, sterile dressings, or clean cloth taped firmly on both sides to prevent any movement during transport. Call 911 immediately and monitor for signs of shock (pallor, sweating, rapid shallow breathing).",
+      "visual_guide_key": "pressure_bandage"
+    }
+  ]
+}

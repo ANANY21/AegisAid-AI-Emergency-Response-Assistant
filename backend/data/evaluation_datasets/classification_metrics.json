@@ -1,0 +1,40 @@
+{
+  "accuracy": 0.62,
+  "precision_macro": 0.5829670329670329,
+  "recall_macro": 0.604062604062604,
+  "f1_macro": 0.5873015873015872,
+  "critical_class_recall": 0.7857142857142857,
+  "confusion_matrix": [
+    [
+      10,
+      1,
+      0,
+      1
+    ],
+    [
+      5,
+      2,
+      4,
+      0
+    ],
+    [
+      0,
+      4,
+      8,
+      1
+    ],
+    [
+      0,
+      0,
+      3,
+      11
+    ]
+  ],
+  "classes": [
+    "LOW",
+    "MODERATE",
+    "HIGH",
+    "CRITICAL"
+  ],
+  "sample_count": 50
+}

@@ -1,0 +1,20 @@
+{
+  "id": "kb-allergy-005",
+  "document_title": "AHA & WAO Guidelines for the Management of Acute Anaphylaxis",
+  "source_name": "World Allergy Organization (WAO) / AHA",
+  "source_url": "https://www.worldallergy.org/education-and-programs/education/allergic-disease-resource-center/professionals/anaphylaxis-synopsis",
+  "publication_date": "2023-12-05",
+  "category": "anaphylaxis",
+  "contraindications": [
+    "Do NOT force an anaphylactic patient to stand up or walk (can cause sudden lethal cardiovascular collapse / empty heart syndrome).",
+    "Do NOT rely on oral antihistamines or asthma inhalers as a substitute for intramuscular epinephrine."
+  ],
+  "sections": [
+    {
+      "section_name": "Anaphylaxis Recognition and Epinephrine Administration",
+      "keywords": ["anaphylaxis", "severe allergy", "bee sting allergy", "peanut allergy", "epipen", "swollen tongue", "swollen throat", "hives", "stridor"],
+      "content": "Anaphylaxis is a rapid-onset, life-threatening allergic reaction. Symptoms include diffuse urticaria (hives), swelling of lips, tongue, or throat (angioedema), difficulty breathing, wheezing, throat tightness, hoarse voice, abdominal cramping, and hypotension (dizziness, collapse). First step: Administer Epinephrine (Adrenaline) autoinjector immediately into the outer mid-thigh (anterolateral thigh muscle). Hold firmly against thigh for 3 to 10 seconds according to device instructions. Call 911 immediately. Lay the person flat on their back with legs elevated unless they are vomiting or having severe breathing difficulty (in which case allow them to sit upright with legs out). Do NOT let them stand up or walk. If symptoms do not improve within 5 to 15 minutes, administer a second epinephrine autoinjector in the opposite thigh.",
+      "visual_guide_key": "recovery_position"
+    }
+  ]
+}

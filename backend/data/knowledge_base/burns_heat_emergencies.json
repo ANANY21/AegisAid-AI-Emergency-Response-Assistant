@@ -1,0 +1,27 @@
+{
+  "id": "kb-burns-004",
+  "document_title": "WHO Guidelines on Clinical Management of Burns & Thermal Injuries",
+  "source_name": "World Health Organization (WHO)",
+  "source_url": "https://www.who.int/news-room/fact-sheets/detail/burns",
+  "publication_date": "2023-08-30",
+  "category": "burns",
+  "contraindications": [
+    "Do NOT apply ice, ice water, butter, oil, grease, or toothpaste to a burn (causes hypothermia or tissue ischemia and infection).",
+    "Do NOT pop, prick, or rupture burn blisters.",
+    "Do NOT forcefully peel off clothing adhered to melted or charred skin."
+  ],
+  "sections": [
+    {
+      "section_name": "First-Aid for Thermal and Chemical Burns",
+      "keywords": ["burn", "scald", "boiling water", "fire burn", "blister", "hot oil", "cool running water", "chemical burn"],
+      "content": "For thermal burns: Immediately stop the burning process. Remove the victim from the heat source. Cool the burn immediately with clean, cold running tap water (around 15°C to 20°C) for a minimum of 20 full continuous minutes. Cooling reduces tissue damage and pain. Gently remove rings, watches, tight clothing before swelling begins, but do NOT tear off clothing stuck to the burn. After 20 minutes of cooling, cover the burn loosely with clean plastic cling wrap (layer by layer, never tightly wrapped) or a sterile, non-adherent dressing. Keep the patient warm to prevent hypothermia. Seek emergency medical care if burn is larger than the size of the victim's palm, involves the face, hands, feet, groin, or major joints, or causes white, charred, or leathery skin.",
+      "visual_guide_key": "burns_water"
+    },
+    {
+      "section_name": "Severe Heatstroke vs Heat Exhaustion",
+      "keywords": ["heat stroke", "heat exhaustion", "high body temperature", "hot dry skin", "delirium", "confusion in hot weather"],
+      "content": "Heatstroke is a medical emergency with high mortality. Classic signs: Body temperature above 40°C (104°F), altered mental status, confusion, slurred speech, delirium, seizures, or loss of consciousness, often with hot red dry or excessively sweating skin. Call 911 immediately. Move patient to a shaded or air-conditioned area. Rapidly cool the patient by immersing in cold water if possible, or spraying with cold water and fanning aggressively, and placing ice packs on the neck, armpits, and groin. Do NOT give antipyretic drugs like aspirin or paracetamol/acetaminophen as they are ineffective for environmental hyperthermia and can exacerbate hepatic/renal injury.",
+      "visual_guide_key": "recovery_position"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+text,age,duration_minutes,has_breathing_difficulty,has_unconsciousness,has_severe_bleeding,has_chest_pain,priority
+"Sudden collapse, not breathing, unresponsive on the floor after clutching chest",58,5,1,1,0,1,CRITICAL
+"Patient turned blue, gasping for air, clutching throat and cannot speak",42,3,1,0,0,0,CRITICAL
+"Massive arterial bleeding from thigh laceration, blood spurting continuously",29,7,0,0,1,0,CRITICAL
+"Elderly patient with facial drooping on right side, slurred speech, arm weakness for 20 mins",74,20,0,0,0,0,CRITICAL
+"Child choking on a hard plastic toy, completely silent, lips turning blue",2,2,1,0,0,0,CRITICAL
+"Severe anaphylactic shock after peanut exposure, swollen tongue, stridor, unable to breathe",24,10,1,0,0,0,CRITICAL
+"Found unresponsive with pinpoint pupils, shallow breathing 4 breaths per minute, suspected overdose",31,15,1,1,0,0,CRITICAL
+"Severe head trauma with loss of consciousness and skull depression after motor vehicle crash",35,12,0,1,1,0,CRITICAL
+"Deep knife stab wound to chest with sucking chest noise and rapid blood loss",27,8,1,0,1,0,CRITICAL
+"Crushing substernal chest pressure radiating to left jaw and shoulder with severe sweating",62,25,1,0,0,1,CRITICAL
+"Severe heatstroke, rectal temp over 104F, delirium, ceased sweating, hot dry skin",45,30,0,1,0,0,CRITICAL
+"Cardiac arrest in public park, bystander bystander CPR ongoing",50,4,1,1,0,0,CRITICAL
+"Infant unresponsive with high fever 105F and blue discoloration around mouth",1,15,1,1,0,0,CRITICAL
+"Profuse bleeding from forearm laceration not stopping despite firm direct pressure for 15 mins",38,15,0,0,1,0,CRITICAL
+"Sudden severe explosive headache described as worst headache of life with stiff neck",49,30,0,0,0,0,HIGH
+"Second degree boiling water scald covering entire right arm and chest with huge blisters",33,20,0,0,0,0,HIGH
+"Asthma attack, using rescue inhaler 6 puffs with minimal relief, speaking in broken phrases",19,45,1,0,0,0,HIGH
+"Compound open fracture of tibia with bone visible through skin, moderate oozing",22,40,0,0,0,0,HIGH
+"Active tonic clonic seizure lasting 4 minutes in patient with known epilepsy",28,4,0,1,0,0,HIGH
+"Severe dehydration in 8-month infant with persistent projectile vomiting and sunken fontanelle",1,360,0,0,0,0,HIGH
+"Acute severe abdominal pain in lower right quadrant with rebound tenderness and fever 102F",26,180,0,0,0,0,HIGH
+"Deep dog bite laceration on hand with torn muscle and active bleeding controlled by wrap",41,25,0,0,0,0,HIGH
+"High electric shock from power tool with entry and exit burns and transient numbness",39,15,0,0,0,0,HIGH
+"Chemical splash in both eyes with concentrated industrial bleach, severe pain",52,10,0,0,0,0,HIGH
+"Diabetic patient with blood glucose 450 mg/dL, fruity breath, vomiting, confusion",34,240,0,0,0,0,HIGH
+"Suspected concussion after sports collision, vomited twice, disoriented to time and place",17,60,0,0,0,0,HIGH
+"Severe back injury after falling 12 feet from ladder, severe pain, tingling in toes",48,25,0,0,0,0,HIGH
+"Moderate asthma flareup, wheezing while walking up stairs, inhaler provides partial relief",25,120,0,0,0,0,MODERATE
+"Superficial burn on palm from touching hot oven rack, redness and small 1cm blister",30,15,0,0,0,0,MODERATE
+"Sprained ankle from basketball landing, swollen, bruised, difficulty bearing weight",21,90,0,0,0,0,MODERATE
+"Persistent vomiting and diarrhea for 18 hours, can keep small sips of water down",32,1080,0,0,0,0,MODERATE
+"Finger cut with kitchen knife while chopping vegetables, controlled bleeding with gauze",27,20,0,0,0,0,MODERATE
+"Fever 101.5F with sore throat, painful swallowing, swollen tonsils for 2 days",23,2880,0,0,0,0,MODERATE
+"Mild allergic rash with localized hives on forearm after touching garden plant, no breathing issue",36,180,0,0,0,0,MODERATE
+"Deep splinter embedded under thumbnail with localized throbbing pain and redness",44,300,0,0,0,0,MODERATE
+"Moderate migraine headache with photophobia and nausea, usual prescription medication taken",29,180,0,0,0,0,MODERATE
+"Minor whiplash neck soreness following low-speed rear end car bumper tap yesterday",35,1440,0,0,0,0,MODERATE
+"Ear pain and muffled hearing in 6-year-old child following a mild cold",6,1440,0,0,0,0,MODERATE
+"Small paper cut on index finger with minor stinging",22,5,0,0,0,0,LOW
+"Mild scratch from cat on forearm, bleeding stopped immediately with band-aid",28,10,0,0,0,0,LOW
+"Mild tension headache after 8 hours working at computer monitor, no nausea",34,120,0,0,0,0,LOW
+"Dry cough and runny nose for 3 days, no fever, no shortness of breath",40,4320,0,0,0,0,LOW
+"Small bruise on knee after bumping into coffee table, full range of motion",31,60,0,0,0,0,LOW
+"Mild sunburn on shoulders after 1 hour at beach, slightly pink skin, no blisters",24,240,0,0,0,0,LOW
+"Dry chapped lips during winter weather, mild discomfort",19,1440,0,0,0,0,LOW
+"Mild muscle soreness in biceps the day after starting weightlifting gym routine",26,720,0,0,0,0,LOW
+"Minor mosquito bite on ankle, mildly itchy, no swelling",33,180,0,0,0,0,LOW
+"Lost contact lens causing mild eye irritation, rinsed with saline solution",25,30,0,0,0,0,LOW
+"Mild hiccup episode lasting 15 minutes, otherwise completely healthy",27,15,0,0,0,0,LOW
+"Tiredness and mild fatigue after lack of sleep last night, no medical symptoms",30,480,0,0,0,0,LOW

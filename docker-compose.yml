@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  aegisaid-assistant:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegisaid_emergency_assistant
+    ports:
+      - "8000:8000"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_MODEL=llama-3.3-70b-versatile
+      - RETRIEVAL_SIMILARITY_THRESHOLD=0.52
+      - RETRIEVAL_TOP_K=4
+      - CLASSIFIER_CONFIDENCE_THRESHOLD=0.60
+      - CRITICAL_BYPASS_ENABLED=True
+    volumes:
+      - ./backend/data:/app/backend/data
+      - ./backend/models:/app/backend/models
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
