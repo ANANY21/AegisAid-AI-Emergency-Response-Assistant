@@ -5,7 +5,7 @@
 [![React](https://img.shields.io/badge/React-19.0+-61DAFB?logo=react&logoColor=black)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7+-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4+-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![Groq API](https://img.shields.io/badge/Groq-Llama--3.3--70B-F55036?logo=groq&logoColor=white)](https://groq.com)
+[![Groq API](https://img.shields.io/badge/Groq-GPT--OSS--120B-F55036?logo=groq&logoColor=white)](https://groq.com)
 [![Scikit-Learn](https://img.shields.io/badge/scikit--learn-Calibrated--Classifier-F7931E?logo=scikitlearn&logoColor=white)](https://scikit-learn.org)
 [![Zero-Agentic](https://img.shields.io/badge/Architecture-Deterministic_Zero--Agentic-10B981)](#strict-architectural-mandate)
 [![Test Suite](https://img.shields.io/badge/Tests-8%2F8_Passing-brightgreen)](#testing--validation)
@@ -31,7 +31,7 @@ During acute medical emergencies, individuals face critical delays due to lack o
    - `LOW_RETRIEVAL_RELEVANCE`: Safely reject irrelevant context, withhold speculative advice, recommend physician consultation.
    - `CONFLICTING_INFORMATION`: Flag contradictory medical guidelines, escalate to medical hotlines.
    - `CRITICAL_EMERGENCY`: Immediate bypass warning, direct 911 / 112 dispatch, and instant life-saving protocol (Hands-Only CPR, Bleeding Control, Heimlich).
-5. **Grounded Generative AI via Groq**: Fast inference using `llama-3.3-70b-versatile` grounded strictly in retrieved context, with deterministic clinical protocol fallbacks when offline or unconfigured.
+5. **Grounded Generative AI via Groq**: Fast inference using `openai/gpt-oss-120b` grounded strictly in retrieved context, with deterministic clinical protocol fallbacks when offline or unconfigured.
 
 ---
 
@@ -74,7 +74,7 @@ In accordance with safety engineering principles for critical healthcare systems
                                                        │
                                                        ▼
                                   [ Module 10: Grounded Response via Groq ]
-                                   (llama-3.3-70b-versatile / Fallback)
+                                   (openai/gpt-oss-120b / Fallback)
                                                        │
                                                        ▼
                                   [ Module 12: Hospital & Facility Locator ]
@@ -96,7 +96,7 @@ In accordance with safety engineering principles for critical healthcare systems
 | **Module 7** | **Retrieval Relevance Validation** | Dedicated validation layer calculating cosine similarity, top-K selection, relevance threshold filtering (0.52), and detection of conflicting contraindications. |
 | **Module 8** | **Confidence & Safety Engine** | Core novelty separating classifier confidence from retrieval relevance and answer faithfulness. Routes requests into deterministic outcomes (A through E). |
 | **Module 9** | **Prompt Engineering** | Structured JSON prompts with explicit role constraints, strict adherence to retrieved evidence, and zero hallucination tolerance. |
-| **Module 10** | **Generative AI Response Engine** | Official Groq API integration (`llama-3.3-70b-versatile`) with structured Pydantic response models and offline deterministic medical fallbacks. |
+| **Module 10** | **Generative AI Response Engine** | Official Groq API integration (`openai/gpt-oss-120b`) with structured Pydantic response models and offline deterministic medical fallbacks. |
 | **Module 11** | **Visual Guidance** | Medical SVG procedures for Adult Hands-Only CPR (100-120 BPM), Heimlich Maneuver (5 back blows + 5 abdominal thrusts), Pressure Bandaging, and the 20-minute Burns Water Rule. |
 | **Module 12** | **Hospital Assistance** | OpenStreetMap Overpass API integration calculating Haversine distances to nearby emergency trauma centers, with telephone dispatch shortcuts and explicit bed-availability disclaimers. |
 
@@ -111,8 +111,8 @@ AegisAid integrates Groq as its primary high-speed LLM engine.
 2. Configure `backend/.env`:
    ```bash
    GROQ_API_KEY=gsk_your_actual_key_here
-   GROQ_MODEL=llama-3.3-70b-versatile
-   GROQ_VISION_MODEL=llama-3.2-11b-vision-preview
+   GROQ_MODEL=openai/gpt-oss-120b
+   GROQ_VISION_MODEL=qwen/qwen3.8-27b
    ```
 3. AegisAid automatically utilizes Groq for evidence-grounded first-aid instruction generation. If the API key is omitted or the connection is offline, the system seamlessly transitions to its built-in, clinically validated **Deterministic Protocol Engine** without crashing.
 
