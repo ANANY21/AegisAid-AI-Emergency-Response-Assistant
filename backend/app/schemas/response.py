@@ -4,6 +4,7 @@ from enum import Enum
 from .classification import PriorityLevel
 from .retrieval import RelevanceStatus, RetrievedChunk
 from .sources import CitationDetail, EvidenceVerificationSummary
+from .hospitals import MedicalFacility
 
 class SystemOutcome(str, Enum):
     SUFFICIENT_EVIDENCE = "SUFFICIENT_EVIDENCE"
@@ -44,6 +45,9 @@ class EmergencyResponse(BaseModel):
     shap_summary: Optional[Dict[str, Any]] = None
     confidence_breakdown: ConfidenceBreakdown
     clarification_questions: List[str] = Field(default_factory=list)
+    nearby_facilities: List[MedicalFacility] = Field(default_factory=list, description="Nearest verified hospitals identified via GPS")
+    nearest_hospital_names: List[str] = Field(default_factory=list, description="List of nearest hospital names with distance")
+    user_location_label: Optional[str] = Field(None, description="Resolved GPS locality or coordinates")
     disclaimer: str = (
         "CRITICAL DISCLAIMER: AegisAid is an automated AI decision-support tool, NOT a licensed medical professional "
         "or diagnostic service. In any serious, worsening, or life-threatening emergency, immediately call local emergency "

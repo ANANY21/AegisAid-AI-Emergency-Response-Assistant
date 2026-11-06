@@ -6,7 +6,8 @@ import { ExplainabilityModal } from '../components/ExplainabilityModal';
 import { 
   AlertOctagon, PhoneCall, CheckCircle, AlertTriangle, ShieldCheck, 
   ExternalLink, HelpCircle, FileText, XCircle, ArrowLeft, Hospital, 
-  Brain, BookOpen, FileCheck, Clock, ShieldAlert, Sparkles, Bookmark
+  Brain, BookOpen, FileCheck, Clock, ShieldAlert, Sparkles, Bookmark,
+  Navigation, Phone, MapPin
 } from 'lucide-react';
 
 interface ResultViewProps {
@@ -138,6 +139,129 @@ export const ResultView: React.FC<ResultViewProps> = ({ response, onNewEmergency
               <li key={idx}>{q}</li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* Nearest Hospitals via GPS Banner & Cards */}
+      {response.nearby_facilities && response.nearby_facilities.length > 0 && (
+        <div className="bg-navy-900 border border-emerald-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-navy-800">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                <Hospital className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-extrabold text-white flex items-center gap-2">
+                  <span>Nearest Hospitals (via GPS)</span>
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800/60 text-[10px] font-mono font-bold flex items-center gap-1">
+                    <MapPin className="w-2.5 h-2.5 text-emerald-400" />
+                    <span>GPS Active</span>
+                  </span>
+                </h3>
+                <p className="text-xs text-slate-400">
+                  {response.user_location_label
+                    ? `Nearest verified emergency facilities to ${response.user_location_label}`
+                    : 'Closest verified medical facilities identified with live GPS coordinates'}
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={onFindHospitals}
+              className="px-3.5 py-2 rounded-xl bg-navy-800 hover:bg-navy-750 text-medic-teal text-xs font-bold border border-navy-700 flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
+            >
+              <Navigation className="w-3.5 h-3.5" />
+              <span>Full Interactive Map</span>
+            </button>
+          </div>
+
+          {/* Hospital Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+            {response.nearby_facilities.slice(0, 4).map((fac, idx) => (
+              <div
+                key={fac.id || idx}
+                className="p-4 rounded-xl bg-navy-950 border border-navy-800 hover:border-emerald-500/40 transition-all space-y-2.5"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-5 h-5 rounded-full bg-emerald-600/20 text-emerald-400 font-bold text-xs flex items-center justify-center shrink-0">
+                        {idx + 1}
+                      </span>
+                      <h4 className="font-extrabold text-white text-sm truncate">{fac.name}</h4>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-1 line-clamp-1">{fac.address}</p>
+                  </div>
+
+                  <span className="text-xs font-mono font-black text-medic-teal bg-navy-900 px-2 py-1 rounded-lg border border-navy-800 shrink-0">
+                    {fac.distance_km} km
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2 text-xs">
+                  {fac.has_emergency_room && (
+                    <span className="px-2 py-0.5 rounded-md bg-emergency-950 text-emergency-400 border border-emergency-800/50 text-[10px] font-bold">
+                      24/7 ER
+                    </span>
+                  )}
+                  {fac.driving_duration_text && (
+                    <span className="text-slate-400 text-[11px]">
+                      &bull; {fac.driving_duration_text}
+                    </span>
+                  )}
+                  {fac.phone && (
+                    <span className="font-mono text-emerald-300 text-[11px] truncate">
+                      &bull; {fac.phone}
+                    </span>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2 pt-1 border-t border-navy-900">
+                  {fac.phone ? (
+                    <a
+                      href={`tel:${fac.phone}`}
+                      className="flex-1 py-1.5 px-2.5 rounded-lg bg-emergency-600/20 hover:bg-emergency-600/30 text-emergency-400 border border-emergency-500/30 text-xs font-bold flex items-center justify-center gap-1 transition-colors"
+                    >
+                      <Phone className="w-3 h-3" />
+                      <span>Call</span>
+                    </a>
+                  ) : (
+                    <a
+                      href="tel:112"
+                      className="flex-1 py-1.5 px-2.5 rounded-lg bg-navy-900 hover:bg-navy-800 text-slate-400 border border-navy-800 text-xs font-bold flex items-center justify-center gap-1 transition-colors"
+                    >
+                      <Phone className="w-3 h-3 text-emergency-500" />
+                      <span>112</span>
+                    </a>
+                  )}
+
+                  {fac.osm_directions_url && (
+                    <a
+                      href={fac.osm_directions_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-1.5 px-2.5 rounded-lg bg-emerald-950/70 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-600/40 text-xs font-bold flex items-center justify-center gap-1 transition-colors"
+                      title="Open in OpenStreetMap"
+                    >
+                      <ExternalLink className="w-3 h-3 text-emerald-400" />
+                      <span>OSM Route</span>
+                    </a>
+                  )}
+
+                  <a
+                    href={fac.directions_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-1.5 px-2.5 rounded-lg bg-medic-teal hover:bg-medic-teal-light text-navy-950 text-xs font-black flex items-center justify-center gap-1 transition-colors"
+                  >
+                    <Navigation className="w-3 h-3" />
+                    <span>Navigate</span>
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

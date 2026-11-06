@@ -19,10 +19,13 @@ def build_first_aid_prompt(
     raw_description: str,
     extracted_info: ExtractedEmergencyInfo,
     classification: ClassificationResult,
-    evidence_chunks: List[RetrievedChunk]
+    evidence_chunks: List[RetrievedChunk],
+    nearby_facilities: Optional[List[Any]] = None,
+    user_location_label: Optional[str] = None
 ) -> str:
     """
-    Constructs an evidence-grounded prompt for first-aid instruction generation with explicit citation indexing.
+    Constructs an evidence-grounded prompt for first-aid instruction generation with explicit citation indexing
+    and real-time GPS-discovered hospital recommendations.
     """
     evidence_text = "\n\n".join([
         f"--- EVIDENCE SOURCE [{idx+1}]: {c.document_title} ({c.publishing_organization or c.source_name}) ---\n"
@@ -31,6 +34,17 @@ def build_first_aid_prompt(
         f"CONTRAINDICATIONS: {', '.join(c.contraindications) if c.contraindications else 'None listed'}"
         for idx, c in enumerate(evidence_chunks)
     ])
+
+    hospitals_text = ""
+    if nearby_facilities:
+        hosp_lines = []
+        for i, fac in enumerate(nearby_facilities[:4]):
+            name = getattr(fac, 'name', fac.get('name') if isinstance(fac, dict) else str(fac))
+            dist = getattr(fac, 'distance_km', fac.get('distance_km') if isinstance(fac, dict) else '?')
+            er = getattr(fac, 'has_emergency_room', fac.get('has_emergency_room') if isinstance(fac, dict) else False)
+            hosp_lines.append(f"{i+1}. {name} ({dist} km away{', 24/7 ER' if er else ''})")
+        loc_str = f" Near: {user_location_label}" if user_location_label else ""
+        hospitals_text = f"\n[NEAREST VERIFIED HOSPITALS VIA GPS{loc_str}]\n" + "\n".join(hosp_lines)
     
     prompt = f"""[EMERGENCY INCIDENT DATA]
 - User Description: "{raw_description}"
@@ -39,6 +53,7 @@ def build_first_aid_prompt(
 - Affected Body Parts: {', '.join(extracted_info.affected_body_parts)}
 - Patient Age: {extracted_info.age if extracted_info.age is not None else 'Unknown'}
 - Duration: {extracted_info.duration}
+{hospitals_text}
 
 [VERIFIED RETRIEVED MEDICAL EVIDENCE]
 {evidence_text if evidence_chunks else "NO VERIFIED EVIDENCE AVAILABLE. DO NOT INVENT MEDICAL TREATMENTS."}
@@ -46,9 +61,10 @@ def build_first_aid_prompt(
 [TASK]
 Generate a grounded, actionable emergency response adhering strictly to the retrieved evidence above.
 Include citation tags [1], [2], etc. in the step details to trace back to the exact evidence source.
+{f"MANDATE: Explicitly name the nearest hospital(s) from [NEAREST VERIFIED HOSPITALS VIA GPS] in your summary or when_to_seek_immediate_care so the user knows exactly where to go." if nearby_facilities else ""}
 Return ONLY valid JSON matching this exact structure:
 {{
-  "summary": "Concise 1-2 sentence emergency situation summary referencing [1] if applicable",
+  "summary": "Concise 1-2 sentence emergency situation summary referencing [1] and mentioning nearest hospital if urgent",
   "first_aid_steps": [
     {{
       "step_number": 1,
@@ -60,10 +76,9 @@ Return ONLY valid JSON matching this exact structure:
   ],
   "precautions": ["Key precautions based on the evidence"],
   "what_to_avoid": ["Actions that must NOT be taken, e.g. do not pop blisters, do not give water if choking"],
-  "when_to_seek_immediate_care": "Clear criteria for when symptoms mandate urgent hospital transport"
+  "when_to_seek_immediate_care": "Clear criteria for hospital transport, explicitly naming nearest hospital facility if emergency care is required"
 }}
 """
-    return prompt
     return prompt
 
 def build_clarification_prompt(

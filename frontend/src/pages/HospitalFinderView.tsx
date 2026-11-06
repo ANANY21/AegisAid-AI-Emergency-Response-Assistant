@@ -121,11 +121,20 @@ export const HospitalFinderView: React.FC = () => {
         } else {
           setGpsStatus('unavailable');
         }
+
+        // Gracefully initialize demonstration anchor so nearest hospitals are always displayed
+        const demoLat = 13.0012;
+        const demoLng = 80.2565;
+        setCoords({ lat: demoLat, lng: demoLng });
+        setLocalityName('Adyar, Chennai (Demonstration GPS Anchor)');
+        setFullAddress('Adyar, Chennai, Tamil Nadu 600020, India');
+        setLastUpdated(new Date().toLocaleTimeString());
+        loadFacilities(demoLat, demoLng, searchRadiusKm, sortBy, filterType);
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
+        timeout: 8000,
+        maximumAge: 30000
       }
     );
   };

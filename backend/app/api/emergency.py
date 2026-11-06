@@ -16,6 +16,7 @@ from ..services.retrieval_validation import retrieval_validator
 from ..services.confidence_engine import safety_engine
 from ..services.generation_service import generation_service
 from ..services.shap_service import shap_service
+from ..services.hospital_service import hospital_service
 from ..config import settings
 from ..core.logging import logger
 
@@ -158,6 +159,44 @@ def analyze_emergency(
         raw_text=cleaned_text
     )
 
+    # Stage 7.5: Nearest Hospital Discovery via GPS
+    nearby_facilities = []
+    user_location_label = payload.location_text
+    target_lat = payload.latitude
+    target_lng = payload.longitude
+
+    # Match named preset if GPS coordinates not directly supplied
+    if target_lat is None or target_lng is None:
+        if payload.location_text:
+            loc_lower = payload.location_text.lower().strip()
+            for preset in hospital_service.get_chennai_presets():
+                if preset["name"].lower() in loc_lower or loc_lower in preset["name"].lower():
+                    target_lat = preset["latitude"]
+                    target_lng = preset["longitude"]
+                    user_location_label = preset["locality"]
+                    break
+
+        # Fallback to Chennai demonstration hub so nearest facilities can always be recommended
+        if target_lat is None or target_lng is None:
+            target_lat = 13.0012
+            target_lng = 80.2565
+            if not user_location_label:
+                user_location_label = "Chennai Hub (Demo)"
+
+    try:
+        hosp_res = hospital_service.find_nearby_facilities(
+            latitude=target_lat,
+            longitude=target_lng,
+            radius_km=7.5,
+            sort_by="distance",
+            filter_type="all"
+        )
+        nearby_facilities = hosp_res.facilities[:5]
+        if not user_location_label and hosp_res.search_locality:
+            user_location_label = hosp_res.search_locality
+    except Exception as e:
+        logger.warning(f"Error querying nearest hospitals for emergency session: {e}")
+
     # Stage 8: Grounded Response Generation
     response = generation_service.generate_response(
         session_id=session_id,
@@ -166,7 +205,9 @@ def analyze_emergency(
         classification=classification,
         retrieval_val=retrieval_val,
         safety_evaluation=safety_evaluation,
-        shap_summary=shap_summary
+        shap_summary=shap_summary,
+        nearby_facilities=nearby_facilities,
+        user_location_label=user_location_label
     )
 
     # Stage 9: Session Persistence

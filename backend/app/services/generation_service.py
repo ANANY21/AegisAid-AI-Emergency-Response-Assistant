@@ -1,13 +1,14 @@
 import json
 import re
 from typing import Dict, Any, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import httpx
 
 from ..config import settings
 from ..schemas.emergency import ExtractedEmergencyInfo
 from ..schemas.classification import ClassificationResult, PriorityLevel
 from ..schemas.retrieval import RetrievalValidationResult, RetrievedChunk
+from ..schemas.hospitals import MedicalFacility
 from ..schemas.response import (
     EmergencyResponse, SystemOutcome, FirstAidStep,
     ConfidenceBreakdown, RelevanceStatus
@@ -183,11 +184,13 @@ class EmergencyGenerationService:
         classification: ClassificationResult,
         retrieval_val: RetrievalValidationResult,
         safety_evaluation: Dict[str, Any],
-        shap_summary: Optional[Dict[str, Any]] = None
+        shap_summary: Optional[Dict[str, Any]] = None,
+        nearby_facilities: Optional[List[MedicalFacility]] = None,
+        user_location_label: Optional[str] = None
     ) -> EmergencyResponse:
         """
         Generates grounded, structured emergency response based on system outcome,
-        safety rules, and validated retrieval evidence.
+        safety rules, validated retrieval evidence, and GPS-discovered hospital facilities.
         """
         outcome = safety_evaluation["outcome"]
         is_critical = safety_evaluation.get("is_critical_bypass", False)
@@ -195,6 +198,16 @@ class EmergencyGenerationService:
         confidence_breakdown = safety_evaluation["confidence_breakdown"]
         clarification_questions = safety_evaluation.get("clarification_questions", [])
         
+        facilities_list = nearby_facilities or []
+        nearest_hospital_names = [
+            f"{f.name} ({f.distance_km} km{', 24/7 ER' if f.has_emergency_room else ''})"
+            for f in facilities_list[:5]
+        ]
+        hosp_recommendation = (
+            f" Nearest hospital facilities identified via GPS: {', '.join(nearest_hospital_names[:2])}."
+            if nearest_hospital_names else ""
+        )
+
         sources_meta = []
         for c in retrieval_val.top_chunks:
             sources_meta.append({
@@ -215,13 +228,17 @@ class EmergencyGenerationService:
 
         # Scenario 1: Ambiguous Input -> Withhold medical instructions, ask clarifying questions
         if outcome == SystemOutcome.AMBIGUOUS_INPUT:
+            ambiguity_summary = "The emergency description is too brief or ambiguous to determine appropriate medical triage safely."
+            if nearest_hospital_names and ("hospital" in raw_description.lower() or "where" in raw_description.lower()):
+                ambiguity_summary = f"Identified nearest hospitals via GPS: {', '.join(nearest_hospital_names[:3])}."
+
             return EmergencyResponse(
                 session_id=session_id,
                 outcome=outcome,
                 priority=classification.priority,
                 is_critical_bypass=False,
                 immediate_emergency_warning=None,
-                summary="The emergency description is too brief or ambiguous to determine appropriate medical triage safely.",
+                summary=ambiguity_summary,
                 first_aid_steps=[
                     FirstAidStep(
                         step_number=1,
@@ -233,12 +250,15 @@ class EmergencyGenerationService:
                 ],
                 precautions=["Do not give medications without knowing the underlying condition"],
                 what_to_avoid=["Do not assume the situation is mild if symptoms change rapidly"],
-                when_to_seek_immediate_care="If breathing becomes difficult, chest pain arises, or consciousness wavers, call emergency services immediately.",
+                when_to_seek_immediate_care="If breathing becomes difficult, chest pain arises, or consciousness wavers, call emergency services immediately." + hosp_recommendation,
                 sources=[],
                 confidence_breakdown=confidence_breakdown,
                 clarification_questions=clarification_questions,
                 shap_summary=shap_summary,
-                generated_at=datetime.utcnow().isoformat(),
+                nearby_facilities=facilities_list,
+                nearest_hospital_names=nearest_hospital_names,
+                user_location_label=user_location_label,
+                generated_at=datetime.now(timezone.utc).isoformat(),
                 llm_provider="Safety Rule Engine (Ambiguity Guardrail)"
             )
 
@@ -265,12 +285,15 @@ class EmergencyGenerationService:
                 ],
                 precautions=["Keep patient quiet, calm, and monitored", "Record any evolving symptoms"],
                 what_to_avoid=["Do NOT attempt experimental or non-prescribed treatments"],
-                when_to_seek_immediate_care="If any red flags occur (loss of consciousness, breathing difficulty, extreme pain, or numbness).",
+                when_to_seek_immediate_care="If any red flags occur (loss of consciousness, breathing difficulty, extreme pain, or numbness)." + hosp_recommendation,
                 sources=[],
                 confidence_breakdown=confidence_breakdown,
                 clarification_questions=clarification_questions,
                 shap_summary=shap_summary,
-                generated_at=datetime.utcnow().isoformat(),
+                nearby_facilities=facilities_list,
+                nearest_hospital_names=nearest_hospital_names,
+                user_location_label=user_location_label,
+                generated_at=datetime.now(timezone.utc).isoformat(),
                 llm_provider="Safety Rule Engine (Relevance Threshold Escalation)"
             )
 
@@ -294,12 +317,15 @@ class EmergencyGenerationService:
                 ],
                 precautions=["Do not administer oral medications", "Keep the patient still and resting"],
                 what_to_avoid=["Do not follow conflicting home advice"],
-                when_to_seek_immediate_care="Seek urgent in-person care at an emergency facility immediately.",
+                when_to_seek_immediate_care="Seek urgent in-person care at an emergency facility immediately." + hosp_recommendation,
                 sources=sources_meta,
                 confidence_breakdown=confidence_breakdown,
                 clarification_questions=[],
                 shap_summary=shap_summary,
-                generated_at=datetime.utcnow().isoformat(),
+                nearby_facilities=facilities_list,
+                nearest_hospital_names=nearest_hospital_names,
+                user_location_label=user_location_label,
+                generated_at=datetime.now(timezone.utc).isoformat(),
                 llm_provider="Safety Rule Engine (Conflict Guardrail)"
             )
 
@@ -310,7 +336,9 @@ class EmergencyGenerationService:
                 raw_description=raw_description,
                 extracted_info=extracted_info,
                 classification=classification,
-                evidence_chunks=retrieval_val.top_chunks
+                evidence_chunks=retrieval_val.top_chunks,
+                nearby_facilities=facilities_list,
+                user_location_label=user_location_label
             )
             groq_result = self._call_groq_api(prompt)
 
@@ -389,6 +417,13 @@ class EmergencyGenerationService:
             when_to_seek = mapped["when_to_seek"]
             provider_label = "Deterministic Medical Protocol (AegisAid Core Engine)"
 
+        # Ensure nearest hospital recommendation is explicitly stated when seeking care
+        if hosp_recommendation and nearest_hospital_names[0] not in when_to_seek:
+            when_to_seek = f"{when_to_seek}{hosp_recommendation}"
+
+        if nearest_hospital_names and any(k in raw_description.lower() for k in ["hospital", "nearest", "where", "doctor", "er", "emergency room", "trauma"]):
+            summary = f"Nearest emergency hospital facilities: {', '.join(nearest_hospital_names[:3])}. " + summary
+
         # Evidence verification & citation grounding
         citations, unsupported_claims, evidence_ver = citation_service.verify_and_ground_citations(
             first_aid_steps=[{"action": s.action, "details": s.details} for s in steps],
@@ -415,7 +450,10 @@ class EmergencyGenerationService:
             shap_summary=shap_summary,
             confidence_breakdown=confidence_breakdown,
             clarification_questions=clarification_questions,
-            generated_at=datetime.utcnow().isoformat(),
+            nearby_facilities=facilities_list,
+            nearest_hospital_names=nearest_hospital_names,
+            user_location_label=user_location_label,
+            generated_at=datetime.now(timezone.utc).isoformat(),
             llm_provider=provider_label
         )
 

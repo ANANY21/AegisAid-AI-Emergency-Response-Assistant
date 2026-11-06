@@ -170,6 +170,9 @@ export interface EmergencyResponse {
   shap_summary?: SHAPExplanationResponse | null;
   confidence_breakdown: ConfidenceBreakdown;
   clarification_questions: string[];
+  nearby_facilities?: MedicalFacility[];
+  nearest_hospital_names?: string[];
+  user_location_label?: string | null;
   disclaimer: string;
   generated_at: string;
   llm_provider: string;
