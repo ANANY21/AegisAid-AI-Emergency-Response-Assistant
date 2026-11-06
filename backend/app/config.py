@@ -14,8 +14,8 @@ class Settings(BaseSettings):
     
     # GROQ API Configuration
     GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "llama-3.3-70b-versatile"
-    GROQ_VISION_MODEL: str = "llama-3.2-11b-vision-preview"
+    GROQ_MODEL: str = "openai/gpt-oss-120b"
+    GROQ_VISION_MODEL: str = "qwen/qwen3.8-27b"
     GROQ_TIMEOUT_SECONDS: float = 20.0
     
     # CORS

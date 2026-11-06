@@ -301,20 +301,57 @@ class EmergencyGenerationService:
             )
             groq_result = self._call_groq_api(prompt)
 
-        if groq_result and "first_aid_steps" in groq_result:
+        if groq_result:
+            # Parse first_aid_steps robustly
+            raw_steps = groq_result.get("first_aid_steps", [])
             steps = []
-            for s in groq_result.get("first_aid_steps", []):
-                steps.append(FirstAidStep(
-                    step_number=s.get("step_number", len(steps)+1),
-                    action=s.get("action", "Follow protocol"),
-                    details=s.get("details", ""),
-                    caution=s.get("caution"),
-                    visual_guide_key=s.get("visual_guide_key")
-                ))
+            if isinstance(raw_steps, list):
+                for s in raw_steps:
+                    if isinstance(s, dict):
+                        steps.append(FirstAidStep(
+                            step_number=s.get("step_number", len(steps)+1),
+                            action=s.get("action", f"Step {len(steps)+1}"),
+                            details=s.get("details", str(s)),
+                            caution=s.get("caution"),
+                            visual_guide_key=s.get("visual_guide_key")
+                        ))
+                    elif isinstance(s, str) and s.strip():
+                        steps.append(FirstAidStep(
+                            step_number=len(steps)+1,
+                            action=f"Step {len(steps)+1}",
+                            details=s.strip(),
+                            caution=None,
+                            visual_guide_key=None
+                        ))
+            elif isinstance(raw_steps, str) and raw_steps.strip():
+                # Split numbered steps e.g. "1. ... 2. ..."
+                step_parts = re.split(r"(?:^|\s+)\d+[\.\)]\s+", raw_steps.strip())
+                for p in step_parts:
+                    p = p.strip()
+                    if p:
+                        steps.append(FirstAidStep(
+                            step_number=len(steps)+1,
+                            action=f"Step {len(steps)+1}",
+                            details=p,
+                            caution=None,
+                            visual_guide_key=None
+                        ))
+
+            def to_str_list(val: Any) -> List[str]:
+                if isinstance(val, list):
+                    return [str(item).strip("- * ") for item in val if str(item).strip()]
+                elif isinstance(val, str) and val.strip():
+                    return [line.strip("- * ") for line in val.split("\n") if line.strip("- * ")]
+                return []
+
             summary = groq_result.get("summary", "Emergency assessment based on verified medical protocols.")
-            precautions = groq_result.get("precautions", ["Keep the casualty calm and monitored."])
-            what_to_avoid = groq_result.get("what_to_avoid", ["Avoid unprescribed medication."])
-            when_to_seek = groq_result.get("when_to_seek_immediate_care", "If symptoms worsen or do not rapidly improve, call emergency services.")
+            precautions = to_str_list(groq_result.get("precautions", ["Keep the casualty calm and monitored."]))
+            what_to_avoid = to_str_list(groq_result.get("what_to_avoid", ["Avoid unprescribed medication."]))
+            when_to_seek = (
+                groq_result.get("when_to_seek_immediate_care") or 
+                groq_result.get("when_to_seek") or 
+                "If symptoms worsen or do not rapidly improve, call emergency services immediately."
+            )
             provider_label = f"Groq ({self.model})"
         else:
             # High-fidelity deterministic fallback based on extracted incident

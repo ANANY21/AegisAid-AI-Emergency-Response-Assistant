@@ -45,4 +45,4 @@ class EmergencyResponse(BaseModel):
         "services (911/112/999/108) or go to the nearest emergency facility."
     )
     generated_at: str
-    llm_provider: str = "Groq (llama-3.3-70b-versatile)"
+    llm_provider: str = "Groq (openai/gpt-oss-120b)"
