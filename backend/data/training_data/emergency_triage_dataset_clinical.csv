@@ -1,0 +1,201 @@
+text,age,duration_minutes,has_breathing_difficulty,has_unconsciousness,has_severe_bleeding,has_chest_pain,has_stroke_symptoms,has_anaphylaxis_symptoms,has_severe_trauma,has_altered_mental_status,priority
+"Concussion following rugby tackle: brief 60-second knockout, now awake but repeated amnesia, vomiting, confused",18,45,0,0,0,0,0,0,1,1,HIGH
+Second degree boiling water scald covering entire right arm and chest with huge blisters,33,20,0,0,0,0,0,0,0,0,HIGH
+"Persistent vomiting and diarrhea for 18 hours, can keep small sips of water down",32,1080,0,0,0,0,0,0,0,0,MODERATE
+"Slipped on ice, bruised left hip and lateral thigh, moderate localized contusion, able to bear weight with discomfort, no bone deformity",48,90,0,0,0,0,0,0,0,0,MODERATE
+"Adult with fever 101.8F, painful swallowing, tender anterior cervical lymph nodes, tonsillar exudate, no breathing distress",24,1440,0,0,0,0,0,0,0,0,MODERATE
+"Chemical caustic ingestion: toddler swallowed two sips of alkaline toilet cleaner, oral mucosal burning, intense crying, drooling",2,15,0,0,0,0,0,0,0,0,HIGH
+"Continuous tonic clonic seizure lasting over 12 minutes without interruption, patient cyanotic and convulsing",30,12,1,1,0,0,0,0,0,1,CRITICAL
+"Single mosquito bite on lateral ankle, mildly pruritic red bump 5mm across, no spreading redness, no systemic symptoms",33,180,0,0,0,0,0,0,0,0,LOW
+"Tiny hangnail on right thumb pulled slightly, minor localized tenderness, no pus, no spreading redness, band-aid applied",30,45,0,0,0,0,0,0,0,0,LOW
+Mild muscle soreness in biceps the day after starting weightlifting gym routine,26,720,0,0,0,0,0,0,0,0,LOW
+"Motorcycle collision victim with depressed frontal skull fracture, Glasgow Coma Scale 6, decerebrate posturing",22,15,1,1,1,0,0,0,1,1,CRITICAL
+"Mild post-nasal drip and throat tickle without fever, normal swallowing, lungs clear on auscultation, drinking warm tea",35,2880,0,0,0,0,0,0,0,0,LOW
+"Mild dry cough and clear runny nose for 4 days, afebrile, lungs clear, normal appetite, feels like typical common cold",39,5760,0,0,0,0,0,0,0,0,LOW
+"Acute aortic dissection symptoms: tearing chest and back pain radiating to abdomen, syncope, absent femoral pulses",68,15,1,1,0,1,0,0,0,1,CRITICAL
+"Minor paper cut on palm from wrapping Christmas present, small surface scrape, band-aid applied, no further bleeding",26,15,0,0,0,0,0,0,0,0,LOW
+"Mild nasal congestion and seasonal sneezing from spring tree pollen, eyes itchy, normal energy level, no fever",32,2880,0,0,0,0,0,0,0,0,LOW
+"Allergic reaction to wasp sting, throat completely swollen shut, inspiratory stridor, profound hypotension",29,8,1,1,0,0,0,1,0,1,CRITICAL
+"Hamstring muscle pull while sprinting for train, sudden sharp pop in posterior thigh, moderate swelling, unable to run",32,75,0,0,0,0,0,0,0,0,MODERATE
+Compound skull laceration with visible pulsating brain matter and severe venous sinus hemorrhage after machinery crash,36,15,1,1,1,0,0,0,1,1,CRITICAL
+"Pedestrian struck by SUV at 45 mph, flail chest deformity, sucking chest wound, gasping for breath",47,10,1,1,1,1,0,0,1,1,CRITICAL
+"Kitchen knife laceration to left index finger while slicing bagel, 2cm gaping wound, bleeding stopped with firm gauze pressure",35,25,0,0,0,0,0,0,0,0,MODERATE
+"Asthma attack, using rescue inhaler 6 puffs with minimal relief, speaking in broken phrases",19,45,1,0,0,0,0,0,0,0,HIGH
+"Acute gout attack: sudden onset excruciating pain, swelling, and redness in first metatarsophalangeal joint of right big toe",55,360,0,0,0,0,0,0,0,0,MODERATE
+"Pitbull attack lacerations to calf and thigh with exposed muscle tissue, bleeding controlled by compressive wrap",40,35,0,0,0,0,0,0,1,0,HIGH
+"Acute dense hemiplegia on left side following sudden headache, slurred speech, acute stroke protocol indicated",57,30,0,0,0,0,1,0,0,0,CRITICAL
+"Severe penetrating neck laceration with high-volume arterial bleeding from carotid vessel, patient pale and confused",32,7,1,0,1,0,0,0,1,1,CRITICAL
+"Deep neck stab laceration crossing midline, blood bubbling with air leak, tracheal transection, suffocating",31,6,1,1,1,0,0,0,1,1,CRITICAL
+"High fall from third story construction scaffolding, non-responsive, unequal dilated pupils, blood from ear canal",39,12,1,1,1,0,0,0,1,1,CRITICAL
+"Mild to moderate asthma flareup after walking through autumn park, audible mild wheezing, albuterol gives good temporary relief",22,120,1,0,0,0,0,0,0,0,MODERATE
+"Deep wood splinter jammed under thumbnail after woodworking, painful throbbing and localized redness, unable to remove at home",42,300,0,0,0,0,0,0,0,0,MODERATE
+Crushing substernal chest pressure radiating to left jaw and shoulder with severe sweating,62,25,1,0,0,1,0,0,0,0,CRITICAL
+Active tonic clonic seizure lasting 4 minutes in patient with known epilepsy,28,4,0,1,0,0,0,0,0,0,HIGH
+"Patient choked on steak at restaurant, failed Heimlich, collapsed unconscious on floor with obstructed airway",52,6,1,1,0,0,0,0,0,1,CRITICAL
+"Infant 3 weeks old, grunting respirations, pale grey skin, unarousable, rectal temperature 94F, septic shock",1,60,1,1,0,0,0,0,0,1,CRITICAL
+"Swallowed a small fish bone during dinner, foreign body sensation in oropharynx when swallowing, normal airway, no stridor",44,60,0,0,0,0,0,0,0,0,MODERATE
+"Severe acute pancreatitis: excruciating epigastric boring pain radiating to mid-back, persistent dry retching and dehydration",47,300,0,0,0,0,0,0,0,0,HIGH
+"Localized hives and intensely itchy wheals on forearms after handling pine needles in garden, normal breathing, no lip swelling",36,120,0,0,0,0,0,0,0,0,MODERATE
+"Minor dog bite on calf from neighbor's small terrier, puncture wounds broke skin, bleeding stopped, requires antibiotic consideration",33,45,0,0,0,0,0,0,0,0,MODERATE
+"Mild tension headache across forehead after 8 continuous hours working on computer screen, no nausea or vision changes",34,120,0,0,0,0,0,0,0,0,LOW
+"Stab wound to left subcostal area, internal evisceration of bowel loops, pale, clammy, losing consciousness",33,10,1,1,1,0,0,0,1,1,CRITICAL
+"Massive hematemesis: patient vomiting bright red arterial blood by the basinful, dizzy, blood pressure crashing",54,20,1,0,1,0,0,0,0,1,CRITICAL
+"Mild seasonal allergic rhinitis, intermittent clear nasal discharge, normal temperature 98.4F, no cough, normal activity",25,4320,0,0,0,0,0,0,0,0,LOW
+Small paper cut on index finger with minor stinging,22,5,0,0,0,0,0,0,0,0,LOW
+"Diabetic patient with blood glucose 450 mg/dL, fruity breath, vomiting, confusion",34,240,0,0,0,0,0,0,0,1,HIGH
+"Open pneumothorax: deep nail gun accidental puncture into right lateral chest, painful respiration, localized subcutaneous emphysema",41,30,1,0,0,1,0,0,1,0,HIGH
+"Transient lightheadedness for 3 seconds after standing up too quickly from warm couch, fully resolved immediately with normal walking",20,5,0,0,0,0,0,0,0,0,LOW
+"Sprained ankle from basketball landing, swollen, bruised, difficulty bearing weight",21,90,0,0,0,0,0,0,0,0,MODERATE
+Severe dehydration in 8-month infant with persistent projectile vomiting and sunken fontanelle,1,360,0,0,0,0,0,0,0,0,HIGH
+"Stubbed little toe hard against doorframe, toe is purple and bruised, painful to walk on, no bone protrusion or angulation",26,40,0,0,0,0,0,0,0,0,MODERATE
+"Acute crushing substernal chest pain for 45 minutes, conscious and alert, normal blood pressure, history of angina",61,45,0,0,0,1,0,0,0,0,HIGH
+"Deep glass laceration on volar wrist from broken picture frame, brisk venous bleeding, paresthesia in thumb and index finger",31,20,0,0,1,0,0,0,0,0,HIGH
+"Mild general fatigue and sleepiness following 4 hours of sleep before university exam, no fever or physical pain",21,480,0,0,0,0,0,0,0,0,LOW
+"Severe anaphylactic shock after peanut exposure, swollen tongue, stridor, unable to breathe",24,10,1,0,0,0,0,1,0,0,CRITICAL
+"Superficial thermal burn on palm from touching hot oven rack, redness and small 1cm intact blister, stinging discomfort",30,20,0,0,0,0,0,0,0,0,MODERATE
+"Displaced trimalleolar ankle fracture with skin tenting over medial malleolus, severe deformity, acute neurovascular compromise risk",53,40,0,0,0,0,0,0,1,0,HIGH
+"Severe hypothermia, found in snowdrift, core temp below 82F, profound bradycardia, unarousable stupor",62,180,1,1,0,0,0,0,0,1,CRITICAL
+"Acute localized skin abscess on upper arm, 2cm fluctuant tender red mass with purulent center, fever 99.5F, needs drainage",39,2880,0,0,0,0,0,0,0,0,MODERATE
+"Ectopic pregnancy concern: 6 weeks pregnant, acute severe lower abdominal cramping with vaginal bleeding, shoulder tip pain",27,120,0,0,0,0,0,0,0,0,HIGH
+"Persistent benign hiccups lasting 20 minutes after drinking cold fizzy soda rapidly, otherwise completely asymptomatic",26,20,0,0,0,0,0,0,0,0,LOW
+"High electric shock from 220V appliance, entrance burn on right palm, exit wound on left foot, heart palpitations",33,20,0,0,0,1,0,0,0,0,HIGH
+Delayed onset muscle soreness in quadriceps and calves 24 hours after beginning new couch-to-5k running program,27,1440,0,0,0,0,0,0,0,0,LOW
+"Severe testicular torsion: sudden excruciating right testicular pain 9/10, swollen, tender, nausea and vomiting",16,90,0,0,0,0,0,0,0,0,HIGH
+"Finger cut with kitchen knife while chopping vegetables, controlled bleeding with gauze",27,20,0,0,0,0,0,0,0,0,MODERATE
+Infant unresponsive with high fever 105F and blue discoloration around mouth,1,15,1,1,0,0,0,0,0,1,CRITICAL
+"Moderate migraine headache with photophobia and nausea, usual prescription medication taken",29,180,0,0,0,0,0,0,0,0,MODERATE
+"Severe thermal burn on right hand and fingers from hot exhaust pipe, circumferential white charred dermis, loss of tactile sensation",39,35,0,0,0,0,0,0,0,0,HIGH
+"Small bruise on knee after bumping into coffee table, full range of motion",31,60,0,0,0,0,0,0,0,0,LOW
+"Routine blood pressure measurement check-up, patient feels great, reading is 122/78 mmHg, no symptoms",58,15,0,0,0,0,0,0,0,0,LOW
+"Acute right lower quadrant abdominal pain with severe guarding, rebound tenderness, high fever 102.8F, rigid belly",21,240,0,0,0,0,0,0,0,0,HIGH
+"Acute back muscle spasm after lifting heavy couch, bilateral paraspinal tenderness, no radiating pain, no bowel or bladder changes",45,180,0,0,0,0,0,0,0,0,MODERATE
+"Crushing chest pain radiating down both arms, patient is grey, diaphoresis, systolic BP 70, fainting",59,20,1,1,0,1,0,0,0,1,CRITICAL
+"Acute uncomplicated gastroenteritis: nausea, non-bloody watery diarrhea 4 times today, can keep small sips of oral electrolyte fluid down",31,720,0,0,0,0,0,0,0,0,MODERATE
+"Small paper cut on index finger while opening mail envelope, tiny droplet of blood stopped immediately, mild stinging",24,5,0,0,0,0,0,0,0,0,LOW
+"Dry cough and runny nose for 3 days, no fever, no shortness of breath",40,4320,0,0,0,0,0,0,0,0,LOW
+"Acute sickle cell vaso-occlusive pain crisis: agonizing bone pain in back and legs 10/10, refractory to home opioid prescription",20,180,0,0,0,0,0,0,0,0,HIGH
+"Severe pelvic trauma after being pinned between parked car and trailer, intense pelvic ring pain, unable to move legs",49,30,0,0,0,0,0,0,1,0,HIGH
+"Severe back injury after falling 12 feet from ladder, severe pain, tingling in toes",48,25,0,0,0,0,0,0,0,0,HIGH
+"Suspected non-displaced finger fracture: basketball jammed directly against tip of ring finger, swollen PIP joint, painful flexion",17,60,0,0,0,0,0,0,0,0,MODERATE
+"Third trimester pregnancy with severe headache, visual scotomas, blood pressure 180/110, hyperreflexia, preeclampsia",31,90,0,0,0,0,0,0,0,0,HIGH
+"Severe acute kidney infection (pyelonephritis): unilateral flank pain 9/10, shaking chills, rigor, temp 103.5F, nausea",26,480,0,0,0,0,0,0,0,0,HIGH
+"Massive arterial bleeding from thigh laceration, blood spurting continuously",29,7,0,0,1,0,0,0,0,0,CRITICAL
+"Patient electrocuted by high voltage power cable, cardiopulmonary arrest, no pulse, immediate CPR required",45,4,1,1,0,0,0,0,1,1,CRITICAL
+"Minor mosquito bite on ankle, mildly itchy, no swelling",33,180,0,0,0,0,0,0,0,0,LOW
+"Mild episodic dry eye irritation after driving with car air conditioning blowing directly on face, resolved after lubricating eye drops",52,60,0,0,0,0,0,0,0,0,LOW
+"Mild headache relieved completely within 20 minutes of taking one 200mg ibuprofen tablet, no other symptoms",28,45,0,0,0,0,0,0,0,0,LOW
+"Patient collapsed following severe acute asthma, unresponsive, CPR commenced by emergency medical technician",19,5,1,1,0,0,0,0,0,1,CRITICAL
+"Mild acute knee joint effusion after awkward twist playing tennis, moderate swelling, stable ligaments on self-test, limping",40,180,0,0,0,0,0,0,0,0,MODERATE
+Minor whiplash neck soreness following low-speed rear end car bumper tap yesterday,35,1440,0,0,0,0,0,0,0,0,MODERATE
+"Superficial briar bush scratch on shin while hiking, 3cm light surface scratch, clean and dry, no infection signs",30,120,0,0,0,0,0,0,0,0,LOW
+"Traumatic complete amputation of right lower arm in grain auger machine, uncontrolled bleeding, cold extremities",28,10,0,1,1,0,0,0,1,1,CRITICAL
+High electric shock from power tool with entry and exit burns and transient numbness,39,15,0,0,0,0,0,0,0,0,HIGH
+"Colicky right flank pain waxing and waning for 3 hours, radiating to right lower quadrant, small amount of pink urine, suspected renal calculus",41,180,0,0,0,0,0,0,0,0,MODERATE
+"Severe acute gastrointestinal bleed: passing large amounts of dark maroon melena, feeling very lightheaded upon standing",65,120,0,0,1,0,0,0,0,0,HIGH
+"Mild allergic rash with localized hives on forearm after touching garden plant, no breathing issue",36,180,0,0,0,0,0,0,0,0,MODERATE
+"Cardiac arrest in public park, bystander bystander CPR ongoing",50,4,1,1,0,0,0,0,0,0,CRITICAL
+"Superficial finger graze from scraping against rough stucco wall while painting, washed with soap and water, band-aid placed",37,30,0,0,0,0,0,0,0,0,LOW
+"Acute epistaxis: nosebleed lasting 25 minutes after sneezing, slowed down significantly after holding continuous pressure on soft nostril",22,25,0,0,0,0,0,0,0,0,MODERATE
+"Found unresponsive with pinpoint pupils, shallow breathing 4 breaths per minute, suspected overdose",31,15,1,1,0,0,0,0,0,1,CRITICAL
+"Moderate asthma flareup, wheezing while walking up stairs, inhaler provides partial relief",25,120,0,0,0,0,0,0,0,0,MODERATE
+"Acute severe diverticulitis: left lower quadrant peritoneal guarding, rebound tenderness, high fever 102.5F, obstipation",58,720,0,0,0,0,0,0,0,0,HIGH
+"Child choking on a hard plastic toy, completely silent, lips turning blue",2,2,1,0,0,0,0,1,0,0,CRITICAL
+"Fever 101.5F with sore throat, painful swallowing, swollen tonsils for 2 days",23,2880,0,0,0,0,0,0,0,0,MODERATE
+"Mild whiplash neck soreness and stiffness following low-speed rear bumper tap in traffic yesterday, full neurological exam normal",35,1440,0,0,0,0,0,0,0,0,MODERATE
+"Hot soup splash to upper lip and chin, reddened skin with tiny pinpoint vesicle blisters, immediate cold water applied",23,15,0,0,0,0,0,0,0,0,MODERATE
+"Acute carbon monoxide exposure: family of three with severe throbbing headache, dizziness, nausea after heater malfunction",35,180,0,0,0,0,0,0,0,1,HIGH
+"Acute painful hemorrhoid thrombosis, marble-sized tender purplish perianal lump, severe discomfort when sitting, no melena",50,1440,0,0,0,0,0,0,0,0,MODERATE
+"Severe heatstroke, rectal temp over 104F, delirium, ceased sweating, hot dry skin",45,30,0,1,0,0,1,0,0,1,CRITICAL
+"Sudden onset right-sided complete facial droop, total loss of speech, right arm completely paralyzed 15 mins ago",71,15,0,0,0,0,1,0,0,1,CRITICAL
+"Severe asthma in 10-year-old child: using intercostal accessory muscles to breathe, peak flow < 50%, pale, unable to speak full sentences",10,45,1,0,0,0,0,0,0,0,HIGH
+"Superficial cut on chin from falling off skateboard, 2cm laceration through subcutaneous fat, bleeding controlled with direct pressure",15,30,0,0,0,0,0,0,0,0,MODERATE
+"Small superficial bruise on shin after bumping into low coffee table, full range of knee and ankle motion, no swelling",31,60,0,0,0,0,0,0,0,0,LOW
+"Sudden collapse, not breathing, unresponsive on the floor after clutching chest",58,5,1,1,0,1,0,0,0,1,CRITICAL
+"Small superficial red bump on wrist from outdoor gardening, non-tender, mild itchiness, hydrocortisone cream applied",42,240,0,0,0,0,0,0,0,0,LOW
+"Mild acute diverticulitis flare in known patient: mild left lower quadrant crampy tenderness, temp 99.8F, passing flatus normally",62,1440,0,0,0,0,0,0,0,0,MODERATE
+"Roofer collapsed in 105F direct sunlight, rectal core temp 106F, profound delirium, hot red bone-dry skin, unarousable",48,40,1,1,0,0,0,0,0,1,CRITICAL
+"Inversion ankle injury while jogging on trail, moderate lateral malleolus edema and ecchymosis, limping with pain",28,90,0,0,0,0,0,0,0,0,MODERATE
+"Patient suddenly unable to express words, right mouth corner drooping, right hand numb and helpless for 18 minutes",80,18,0,0,0,0,1,0,0,1,CRITICAL
+"Dry chapped lips during winter weather, mild discomfort",19,1440,0,0,0,0,0,0,0,0,LOW
+"Mild scratch from kitten on back of hand, superficial epidermis barely broken, washed with soap and water, band-aid placed",28,10,0,0,0,0,0,0,0,0,LOW
+"Superficial burn on palm from touching hot oven rack, redness and small 1cm blister",30,15,0,0,0,0,0,0,0,0,MODERATE
+"Mild tension headache after 8 hours working at computer monitor, no nausea",34,120,0,0,0,0,0,0,0,0,LOW
+"Elderly patient on Coumadin fell striking occiput, large expanding subgaleal hematoma, disoriented to day and month",78,60,0,0,0,0,0,0,1,1,HIGH
+"Subungual hematoma covering 40% of thumbnail after slamming thumb in car door, throbbing pressure pain, intact nail bed",25,30,0,0,0,0,0,0,0,0,MODERATE
+"Child slipped on pool deck, 2.5cm linear forehead laceration, bleeding stopped with direct pressure, no loss of consciousness, playful",6,20,0,0,0,0,0,0,0,0,MODERATE
+"Suspected concussion after sports collision, vomited twice, disoriented to time and place",17,60,0,0,0,0,0,0,0,1,HIGH
+"Chemical splash in both eyes with concentrated industrial bleach, severe pain",52,10,0,0,0,0,0,0,0,0,HIGH
+"Small superficial bruise on forearm from carrying heavy cardboard box, size of a coin, no bone pain, full wrist motion",31,180,0,0,0,0,0,0,0,0,LOW
+"Severe sunburn on upper back with multiple tense blisters after spending 4 hours at lake without sunscreen, shivering with mild chills",21,720,0,0,0,0,0,0,0,0,MODERATE
+"Infant with severe cyanosis during feeding episode, completely floppy, paused breathing for over 45 seconds",1,10,1,1,0,0,0,0,0,1,CRITICAL
+"Mild scratch from cat on forearm, bleeding stopped immediately with band-aid",28,10,0,0,0,0,0,0,0,0,LOW
+"Dry, chapped lips and small superficial corner fissure from cold windy winter weather, mild stinging with salty food",19,1440,0,0,0,0,0,0,0,0,LOW
+"Lost contact lens causing mild eye irritation, rinsed with saline solution",25,30,0,0,0,0,0,0,0,0,LOW
+"Sudden onset thunderclap headache described as worst pain in life, stiff neck, photophobia, vomited 3 times",51,50,0,0,0,0,0,0,0,0,HIGH
+Acute paronychia: throbbing swollen erythematous periungual fold on right middle finger with localized collection of pus,29,2880,0,0,0,0,0,0,0,0,MODERATE
+"Mild sunburn on shoulders after 1 hour at beach, slightly pink skin, no blisters",24,240,0,0,0,0,0,0,0,0,LOW
+"Small superficial corneal abrasion from baby fingernail scratch, foreign body sensation, excessive tearing, photophobia",28,90,0,0,0,0,0,0,0,0,MODERATE
+"Elderly patient with facial drooping on right side, slurred speech, arm weakness for 20 mins",74,20,0,0,0,0,1,0,0,0,CRITICAL
+"Deep nail puncture through shoe into heel, rapid spreading erythema, ascending red streaks, fever 102F, acute cellulitis",37,1440,0,0,0,0,0,0,0,0,HIGH
+"Toddler swallowed a whole grape, completely unable to cry, breathe or cough, turning dark cyanotic",2,2,1,0,0,0,0,0,0,0,CRITICAL
+"Acute conjunctivitis in both eyes: waking up with eyelids crusted shut, thick yellow discharge, gritty sensation, normal vision",14,720,0,0,0,0,0,0,0,0,MODERATE
+"Mild transient reflux / heartburn after eating large pepperoni pizza and garlic bread, resolved after drinking water and antacid tablet",43,60,0,0,0,0,0,0,0,0,LOW
+"Routine suture removal request: 4 simple nylon stitches on forearm from resolved minor laceration 10 days ago, wound completely healed",41,14400,0,0,0,0,0,0,0,0,LOW
+"Mild neck muscle stiffness from sleeping in an awkward position on an airplane flight, full range of head rotation with mild ache",45,480,0,0,0,0,0,0,0,0,LOW
+"Tiredness and mild fatigue after lack of sleep last night, no medical symptoms",30,480,0,0,0,0,0,0,0,0,LOW
+"Severe carbon monoxide poisoning from generator inside garage, comatose, cherry-red lips, shallow agonal breathing",42,90,1,1,0,0,0,0,0,1,CRITICAL
+Deep splinter embedded under thumbnail with localized throbbing pain and redness,44,300,0,0,0,0,0,0,0,0,MODERATE
+Severe head trauma with loss of consciousness and skull depression after motor vehicle crash,35,12,0,1,1,0,0,0,1,0,CRITICAL
+"Known severe hemophiliac patient bumped knee against concrete wall, rapid tense hemarthrosis swelling, severe pain",22,45,0,0,0,0,0,0,0,0,HIGH
+"Industrial battery acid splashed into right eye, excruciating pain, chemical conjunctivitis, inability to open eyelids",38,15,0,0,0,0,0,0,0,0,HIGH
+"Acute severe asphyxia from strangulation / hanging attempt, ligature mark, deep coma, stridor, cyanotic face",27,8,1,1,0,0,0,0,1,1,CRITICAL
+"Minor paper staple scratch on palm, tiny 2mm superficial mark, wiped with alcohol pad, no bleeding, no pain",36,15,0,0,0,0,0,0,0,0,LOW
+"Superficial shaving nick on upper lip, pinpoint bleeding ceased immediately after applying styptic pencil / tissue piece",27,10,0,0,0,0,0,0,0,0,LOW
+"Boiling grease splash covering both forearms and anterior abdomen, extensive second-degree blisters, extreme pain",34,25,0,0,0,0,0,0,0,0,HIGH
+Deep knife stab wound to chest with sucking chest noise and rapid blood loss,27,8,1,0,1,0,0,0,1,0,CRITICAL
+Profuse bleeding from forearm laceration not stopping despite firm direct pressure for 15 mins,38,15,0,0,1,0,0,0,0,0,CRITICAL
+"Industrial table saw laceration through femoral artery, bright red blood pumping out forcefully in rhythmic jets",44,5,0,0,1,0,0,0,1,0,CRITICAL
+"Lost soft contact lens inside eye, mild scratchy irritation, lens removed, eye rinsed with saline, mild conjunctival pinkness",25,30,0,0,0,0,0,0,0,0,LOW
+"Fell onto outstretched hand playing volleyball, moderate wrist swelling and dorsal tenderness, anatomical snuffbox non-tender",20,60,0,0,0,0,0,0,0,0,MODERATE
+"Compound open fracture of tibia with bone visible through skin, moderate oozing",22,40,0,0,0,0,0,0,0,0,HIGH
+"Near drowning incident in pool, rescued from bottom, limp, non-responsive, gurgling secretions in airway",4,5,1,1,0,0,0,0,0,1,CRITICAL
+"Minor friction blister on back of heel from wearing new leather dress shoes, intact fluid blister 5mm, mildly uncomfortable walking",29,120,0,0,0,0,0,0,0,0,LOW
+"Child with right ear pain and tugging at ear, temp 101F, crying during night after head cold, acute otitis media suspected",5,480,0,0,0,0,0,0,0,0,MODERATE
+"First degree mild sunburn on shoulders after 45 minutes at outdoor pool, pink skin, no blistering or peeling, mild warm sensation",22,240,0,0,0,0,0,0,0,0,LOW
+"Mild localized skin peeling on nose following a beach holiday last weekend, no erythema, applying moisturizing lotion",23,4320,0,0,0,0,0,0,0,0,LOW
+"Acute ischemic stroke symptoms: left facial weakness, unable to lift left arm, severe slurring of words 25 minutes ago",64,25,0,0,0,0,1,0,0,0,CRITICAL
+"Severe asthmatic in silent chest status, unable to speak, exhausted, agonal respirations, lips blue",23,35,1,1,0,0,0,0,0,1,CRITICAL
+"Severe croup in 18-month toddler: barking cough, loud inspiratory stridor at rest, chest wall indrawing, high fever 103F",1,120,1,0,0,0,0,0,0,0,HIGH
+"Elderly man clutched his chest, gasped, and fell limp to the floor, pulseless and no breathing",67,3,1,1,0,1,0,0,0,1,CRITICAL
+"Minor paper cut on pinky finger from office cardboard filing box, tiny blood speck stopped, applying pressure for 30 seconds",33,10,0,0,0,0,0,0,0,0,LOW
+"IV antibiotic injection caused immediate anaphylactic circulatory collapse, unrecordable pulse, tongue swollen",41,4,1,1,0,0,0,1,0,1,CRITICAL
+"Mild hiccup episode lasting 15 minutes, otherwise completely healthy",27,15,0,0,0,0,0,0,0,0,LOW
+"Open compound fracture of right humerus after ladder fall, bone protruding through skin, active oozing bleeding",46,30,0,0,0,0,0,0,1,0,HIGH
+Deep dog bite laceration on hand with torn muscle and active bleeding controlled by wrap,41,25,0,0,0,0,0,0,0,0,HIGH
+"Child with known tree nut allergy accidentally ate walnut pastry, massive facial angioedema, wheezing, gasping",7,10,1,0,0,0,0,1,0,0,CRITICAL
+"Superficial cat scratch on forearm with mild surrounding erythema 1cm, washed thoroughly with soap and water, feels warm to touch",37,720,0,0,0,0,0,0,0,0,MODERATE
+"Minor sunburn on forehead after afternoon gardening, slightly pink, no blisters, cool wet washcloth provides soothing relief",47,180,0,0,0,0,0,0,0,0,LOW
+"Moderate migraine attack with pulsating left temporal throbbing, nausea and photophobia, typical history of menstrual migraine",29,180,0,0,0,0,0,0,0,0,MODERATE
+Ear pain and muffled hearing in 6-year-old child following a mild cold,6,1440,0,0,0,0,0,0,0,0,MODERATE
+"Adult with acute painful outer ear infection (otitis externa): extreme tenderness when pulling ear pinna, canal swollen, yellow discharge",33,1440,0,0,0,0,0,0,0,0,MODERATE
+"Mild dry skin itching on back after taking very hot bath in winter, relieved after applying ceramide moisturizing cream",64,60,0,0,0,0,0,0,0,0,LOW
+"Patient turned blue, gasping for air, clutching throat and cannot speak",42,3,1,0,0,0,0,0,0,0,CRITICAL
+Bystander CPR in progress for 35-year-old marathon runner who experienced sudden cardiac arrest at finish line,35,5,1,1,0,0,0,0,0,1,CRITICAL
+"Contact dermatitis with oozing vesicular rash on both calves after walking through thick weeds, severe pruritus, afebrile",34,1440,0,0,0,0,0,0,0,0,MODERATE
+"Suspected urinary tract infection in young woman: severe burning dysuria, urinary frequency every 20 mins, suprapubic ache, afebrile",27,480,0,0,0,0,0,0,0,0,MODERATE
+"Stepped on a rusty staple in garage, puncture wound to ball of left foot, minimal bleeding, needs tetanus booster update",38,45,0,0,0,0,0,0,0,0,MODERATE
+"Active suicidal ideation with lethal intent and plan, severe agitation and psychological distress, requires constant observation",24,60,0,0,0,0,0,0,0,1,HIGH
+"Severe acute epiglottitis: adult with high fever, sore throat, severe difficulty swallowing saliva, leaning forward drooling",43,180,1,0,0,0,0,0,0,0,HIGH
+"Severe hypokalemia paralysis: patient on diuretics with profound generalized muscle flaccidity, cardiac palpitations, muscle cramps",60,240,0,0,0,0,0,0,0,0,HIGH
+"Severe asthma attack, rescue inhaler 8 puffs used with zero relief, tachypneic at 32 breaths/min, speaking broken phrases",25,60,1,0,0,0,0,0,0,0,HIGH
+"Gunshot wound to central abdomen, massive active bleeding, distended tense abdomen, rapid thready pulse, faint",24,8,1,0,1,0,0,0,1,1,CRITICAL
+"Suspected bacterial meningitis: young adult with sudden fever 104F, severe neck stiffness, unable to touch chin to chest, petechial rash",19,240,0,0,0,0,0,0,0,1,HIGH
+"Mild muscular tenderness in neck after reading book on couch with poor neck posture, full painless neck range of motion",51,180,0,0,0,0,0,0,0,0,LOW
+Acute severe abdominal pain in lower right quadrant with rebound tenderness and fever 102F,26,180,0,0,0,0,0,0,0,0,HIGH
+"Small painless white aphthous canker sore inside lower lip for 2 days, mild stinging when drinking orange juice",22,2880,0,0,0,0,0,0,0,0,LOW
+"Suspected fentanyl overdose, pinpoint pupils, respiration 3 per minute, unresponsive to shouting or physical pain",26,20,1,1,0,0,0,0,0,1,CRITICAL
+"High velocity power saw kickback causing deep laceration across quadriceps, heavy venous bleeding controlled with pressure bandage",42,25,0,0,1,0,0,0,1,0,HIGH
+Sudden severe explosive headache described as worst headache of life with stiff neck,49,30,0,0,0,0,0,0,0,0,HIGH
+"Diabetic ketoacidosis: Type 1 diabetic with blood glucose 480 mg/dL, heavy Kussmaul respirations, fruity breath, vomiting",28,360,1,0,0,0,0,0,0,1,HIGH
+"Small superficial splinter in index finger pad, easily visible under skin, no pain unless directly pressed on",38,60,0,0,0,0,0,0,0,0,LOW
+"Acute eye trauma: metal shard flew into cornea while angle grinding without goggles, foreign body sensation, severe pain",29,40,0,0,0,0,0,0,0,0,HIGH

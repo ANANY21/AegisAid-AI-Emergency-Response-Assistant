@@ -62,7 +62,15 @@ def get_benchmark_report(db: Session = Depends(get_db)):
             critical_class_recall=cls_data["critical_class_recall"],
             confusion_matrix=cls_data["confusion_matrix"],
             classes=cls_data["classes"],
-            sample_count=cls_data["sample_count"]
+            sample_count=cls_data["sample_count"],
+            model_version=cls_data.get("model_version", "rf-cost-calibrated-triage-v2.0"),
+            evaluation_date=cls_data.get("evaluation_date"),
+            validation_methodology=cls_data.get("validation_methodology"),
+            decision_threshold_tau_crit=cls_data.get("decision_threshold_tau_crit", 0.30),
+            class_distribution=cls_data.get("class_distribution"),
+            baseline_comparison=cls_data.get("baseline_comparison"),
+            cross_validation_5fold=cls_data.get("cross_validation_5fold"),
+            untouched_test_set_evaluation=cls_data.get("untouched_test_set_evaluation")
         ),
         retrieval_metrics=RetrievalMetrics(
             precision_at_k=0.88,

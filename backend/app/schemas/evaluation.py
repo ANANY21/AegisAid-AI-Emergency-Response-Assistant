@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 
 class ClassificationMetrics(BaseModel):
     accuracy: float
@@ -10,6 +10,14 @@ class ClassificationMetrics(BaseModel):
     confusion_matrix: List[List[int]]
     classes: List[str]
     sample_count: int
+    model_version: Optional[str] = "rf-cost-calibrated-triage-v2.0"
+    evaluation_date: Optional[str] = None
+    validation_methodology: Optional[str] = None
+    decision_threshold_tau_crit: Optional[float] = 0.30
+    class_distribution: Optional[Dict[str, int]] = None
+    baseline_comparison: Optional[Dict[str, Any]] = None
+    cross_validation_5fold: Optional[Dict[str, Any]] = None
+    untouched_test_set_evaluation: Optional[Dict[str, Any]] = None
 
 class RetrievalMetrics(BaseModel):
     precision_at_k: float

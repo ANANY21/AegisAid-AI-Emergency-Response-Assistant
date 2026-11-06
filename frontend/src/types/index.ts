@@ -98,6 +98,44 @@ export interface BenchmarkReport {
     confusion_matrix: number[][];
     classes: string[];
     sample_count: number;
+    model_version?: string;
+    evaluation_date?: string;
+    validation_methodology?: string;
+    decision_threshold_tau_crit?: number;
+    class_distribution?: Record<string, number>;
+    baseline_comparison?: {
+      model_version: string;
+      sample_count: number;
+      critical_recall: number;
+      critical_precision: number;
+      critical_false_negatives: number;
+      overall_accuracy: number;
+      macro_f1: number;
+      confusion_matrix?: number[][];
+    };
+    cross_validation_5fold?: {
+      mean_critical_recall: number;
+      std_critical_recall: number;
+      mean_critical_precision: number;
+      std_critical_precision: number;
+      mean_critical_f1: number;
+      mean_overall_accuracy: number;
+      total_aggregated_confusion_matrix: number[][];
+      total_critical_false_negatives: number;
+    };
+    untouched_test_set_evaluation?: {
+      test_sample_count: number;
+      critical_class_recall: number;
+      critical_class_precision: number;
+      critical_class_f1: number;
+      critical_class_specificity: number;
+      critical_false_negatives: number;
+      overall_accuracy: number;
+      macro_precision: number;
+      macro_recall: number;
+      macro_f1: number;
+      confusion_matrix: number[][];
+    };
   };
   retrieval_metrics: {
     precision_at_k: number;

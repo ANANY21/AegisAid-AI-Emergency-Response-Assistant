@@ -101,6 +101,10 @@ def analyze_emergency(
     has_breathing = int("difficulty breathing" in extracted_info.symptoms or "choking" in extracted_info.symptoms)
     has_bleeding = int("severe bleeding" in extracted_info.symptoms)
     has_chest = int("chest pain" in extracted_info.symptoms)
+    has_stroke = int("facial droop" in extracted_info.symptoms or "slurred speech" in extracted_info.symptoms)
+    has_anaphylaxis = int(any(w in cleaned_text.lower() for w in ["anaphylac", "stridor", "swollen tongue", "throat closing"]))
+    has_trauma = int(any(w in cleaned_text.lower() for w in ["skull depression", "stab", "gunshot", "sucking chest", "motor vehicle crash", "amputation"]))
+    has_ams = int(has_unconscious or any(w in cleaned_text.lower() for w in ["delirium", "heatstroke", "pinpoint pupils", "disoriented", "unresponsive"]))
 
     classification = classifier.predict(
         text=cleaned_text,
@@ -109,7 +113,11 @@ def analyze_emergency(
         has_breathing_difficulty=has_breathing,
         has_unconsciousness=has_unconscious,
         has_severe_bleeding=has_bleeding,
-        has_chest_pain=has_chest
+        has_chest_pain=has_chest,
+        has_stroke_symptoms=has_stroke,
+        has_anaphylaxis_symptoms=has_anaphylaxis,
+        has_severe_trauma=has_trauma,
+        has_altered_mental_status=has_ams
     )
 
     # Stage 5: RAG Retrieval

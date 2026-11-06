@@ -1,0 +1,51 @@
+{
+  "model_name": "Original Random Forest Calibrated (Baseline)",
+  "dataset_size": 50,
+  "class_distribution": {
+    "CRITICAL": 14,
+    "HIGH": 13,
+    "LOW": 12,
+    "MODERATE": 11
+  },
+  "overall_accuracy": 0.62,
+  "macro_precision": 0.5829670329670329,
+  "macro_recall": 0.604062604062604,
+  "macro_f1": 0.5873015873015872,
+  "critical_recall": 0.7857142857142857,
+  "critical_precision": 0.8461538461538461,
+  "critical_f1": 0.8148148148148148,
+  "critical_specificity": 0.9444444444444444,
+  "critical_false_negatives": 3,
+  "confusion_matrix": [
+    [
+      10,
+      1,
+      0,
+      1
+    ],
+    [
+      5,
+      2,
+      4,
+      0
+    ],
+    [
+      0,
+      4,
+      8,
+      1
+    ],
+    [
+      0,
+      0,
+      3,
+      11
+    ]
+  ],
+  "classes": [
+    "LOW",
+    "MODERATE",
+    "HIGH",
+    "CRITICAL"
+  ]
+}
