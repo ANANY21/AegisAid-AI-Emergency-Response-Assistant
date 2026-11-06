@@ -13,15 +13,39 @@
   "sections": [
     {
       "section_name": "First-Aid for Thermal and Chemical Burns",
-      "keywords": ["burn", "scald", "boiling water", "fire burn", "blister", "hot oil", "cool running water", "chemical burn"],
-      "content": "For thermal burns: Immediately stop the burning process. Remove the victim from the heat source. Cool the burn immediately with clean, cold running tap water (around 15°C to 20°C) for a minimum of 20 full continuous minutes. Cooling reduces tissue damage and pain. Gently remove rings, watches, tight clothing before swelling begins, but do NOT tear off clothing stuck to the burn. After 20 minutes of cooling, cover the burn loosely with clean plastic cling wrap (layer by layer, never tightly wrapped) or a sterile, non-adherent dressing. Keep the patient warm to prevent hypothermia. Seek emergency medical care if burn is larger than the size of the victim's palm, involves the face, hands, feet, groin, or major joints, or causes white, charred, or leathery skin.",
-      "visual_guide_key": "burns_water"
+      "keywords": [
+        "burn",
+        "scald",
+        "boiling water",
+        "fire burn",
+        "blister",
+        "hot oil",
+        "cool running water",
+        "chemical burn"
+      ],
+      "content": "For thermal burns: Immediately stop the burning process. Remove the victim from the heat source. Cool the burn immediately with clean, cold running tap water (around 15\u00b0C to 20\u00b0C) for a minimum of 20 full continuous minutes. Cooling reduces tissue damage and pain. Gently remove rings, watches, tight clothing before swelling begins, but do NOT tear off clothing stuck to the burn. After 20 minutes of cooling, cover the burn loosely with clean plastic cling wrap (layer by layer, never tightly wrapped) or a sterile, non-adherent dressing. Keep the patient warm to prevent hypothermia. Seek emergency medical care if burn is larger than the size of the victim's palm, involves the face, hands, feet, groin, or major joints, or causes white, charred, or leathery skin.",
+      "visual_guide_key": "burns_water",
+      "page_number": "Guideline Part 2, p. 24-27"
     },
     {
       "section_name": "Severe Heatstroke vs Heat Exhaustion",
-      "keywords": ["heat stroke", "heat exhaustion", "high body temperature", "hot dry skin", "delirium", "confusion in hot weather"],
-      "content": "Heatstroke is a medical emergency with high mortality. Classic signs: Body temperature above 40°C (104°F), altered mental status, confusion, slurred speech, delirium, seizures, or loss of consciousness, often with hot red dry or excessively sweating skin. Call 911 immediately. Move patient to a shaded or air-conditioned area. Rapidly cool the patient by immersing in cold water if possible, or spraying with cold water and fanning aggressively, and placing ice packs on the neck, armpits, and groin. Do NOT give antipyretic drugs like aspirin or paracetamol/acetaminophen as they are ineffective for environmental hyperthermia and can exacerbate hepatic/renal injury.",
-      "visual_guide_key": "recovery_position"
+      "keywords": [
+        "heat stroke",
+        "heat exhaustion",
+        "high body temperature",
+        "hot dry skin",
+        "delirium",
+        "confusion in hot weather"
+      ],
+      "content": "Heatstroke is a medical emergency with high mortality. Classic signs: Body temperature above 40\u00b0C (104\u00b0F), altered mental status, confusion, slurred speech, delirium, seizures, or loss of consciousness, often with hot red dry or excessively sweating skin. Call 911 immediately. Move patient to a shaded or air-conditioned area. Rapidly cool the patient by immersing in cold water if possible, or spraying with cold water and fanning aggressively, and placing ice packs on the neck, armpits, and groin. Do NOT give antipyretic drugs like aspirin or paracetamol/acetaminophen as they are ineffective for environmental hyperthermia and can exacerbate hepatic/renal injury.",
+      "visual_guide_key": "recovery_position",
+      "page_number": "Guideline Part 4, p. 41-43"
     }
-  ]
+  ],
+  "document_id": "kb-burns-004",
+  "publishing_organization": "World Health Organization (WHO)",
+  "version": "v2023.3",
+  "last_reviewed_date": "2024-06-12",
+  "review_status": "Verified",
+  "document_type": "Clinical Guideline"
 }

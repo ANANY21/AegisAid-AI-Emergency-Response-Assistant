@@ -31,6 +31,124 @@ export interface SourceReference {
   source_url?: string | null;
   publication_date?: string | null;
   relevance_score: number;
+  document_id?: string;
+  publishing_organization?: string;
+  version?: string;
+  last_reviewed_date?: string | null;
+  review_status?: string;
+  document_type?: string;
+  page_number?: string | null;
+}
+
+export interface CitationDetail {
+  citation_index: number;
+  citation_tag: string;
+  document_id: string;
+  document_title: string;
+  publishing_organization: string;
+  section: string;
+  page_number?: string | null;
+  source_url?: string | null;
+  review_status: string;
+  document_type: string;
+  relevance_score: number;
+  claim_support_score: number;
+  is_verified_support: boolean;
+  cited_excerpt: string;
+}
+
+export interface EvidenceVerificationSummary {
+  total_citations: number;
+  supported_claims_count: number;
+  unsupported_claims_count: number;
+  mean_grounding_score: number;
+  outdated_sources_flagged: string[];
+  conflicting_sources_flagged: string[];
+  verification_passed: boolean;
+}
+
+export interface SHAPFeatureContribution {
+  rank: number;
+  raw_feature_name: string;
+  feature_name: string;
+  shap_value: number;
+  feature_value: number;
+  impact: 'positive' | 'negative';
+  description: string;
+}
+
+export interface SHAPMulticlassClassDetail {
+  base_value: number;
+  calibrated_probability: number;
+  top_features: Array<{ feature_name: string; shap_value: number; impact: string }>;
+}
+
+export interface SHAPExplanationResponse {
+  session_id?: string;
+  predicted_class: PriorityLevel;
+  focus_class: PriorityLevel;
+  model_version: string;
+  base_value: number;
+  model_output_value: number;
+  class_probabilities: Record<string, number>;
+  feature_contributions: SHAPFeatureContribution[];
+  top_positive_features: SHAPFeatureContribution[];
+  top_negative_features: SHAPFeatureContribution[];
+  multiclass_breakdown: Record<string, SHAPMulticlassClassDetail>;
+  threshold_applied: number;
+  clinical_disclaimer: string;
+  timestamp: string;
+  status: string;
+}
+
+export interface GlobalSHAPFeature {
+  rank: number;
+  feature_name: string;
+  mean_abs_shap: number;
+  description: string;
+  class_mean_impact: Record<string, number>;
+}
+
+export interface GlobalSHAPResponse {
+  model_version: string;
+  sample_count: number;
+  global_top_features: GlobalSHAPFeature[];
+  class_base_values: Record<string, number>;
+  generated_at: string;
+  reviewer_role: string;
+  methodology: string;
+  status?: string;
+}
+
+export interface MedicalSourceProvenance {
+  document_id: string;
+  file_name?: string;
+  document_title: string;
+  publishing_organization: string;
+  source_url?: string | null;
+  version: string;
+  publication_date?: string | null;
+  last_reviewed_date?: string | null;
+  review_status: 'Verified' | 'Pending Review' | 'Outdated' | 'Unavailable';
+  document_type: string;
+  category: string;
+  contraindications: string[];
+  section_count: number;
+  sections: any[];
+  is_stale: boolean;
+  freshness_days?: number | null;
+}
+
+export interface SourceRegistryMetrics {
+  total_sources: number;
+  verified_count: number;
+  pending_review_count: number;
+  outdated_count: number;
+  unavailable_count: number;
+  verification_rate_pct: number;
+  total_chunks_indexed: number;
+  stale_guidelines_count: number;
+  all_sources_active: boolean;
 }
 
 export interface EmergencyResponse {
@@ -46,6 +164,10 @@ export interface EmergencyResponse {
   what_to_avoid: string[];
   when_to_seek_immediate_care: string;
   sources: SourceReference[];
+  citations?: CitationDetail[];
+  unsupported_claims?: string[];
+  evidence_verification?: EvidenceVerificationSummary | null;
+  shap_summary?: SHAPExplanationResponse | null;
   confidence_breakdown: ConfidenceBreakdown;
   clarification_questions: string[];
   disclaimer: string;

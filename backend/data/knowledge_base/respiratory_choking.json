@@ -12,15 +12,40 @@
   "sections": [
     {
       "section_name": "Severe Choking in Conscious Adults and Children over 1 Year",
-      "keywords": ["choking", "cannot breathe", "strangling", "hands on throat", "silent cough", "blue lips", "heimlich", "back blows", "abdominal thrusts"],
+      "keywords": [
+        "choking",
+        "cannot breathe",
+        "strangling",
+        "hands on throat",
+        "silent cough",
+        "blue lips",
+        "heimlich",
+        "back blows",
+        "abdominal thrusts"
+      ],
       "content": "Severe airway obstruction is indicated when the casualty cannot speak, cannot cough effectively, makes high-pitched wheezing noises, clutches their neck (universal choking sign), or begins turning blue. Step 1: Stand behind and slightly to one side of the casualty. Support their chest with one hand and lean them forward. Step 2: Give up to 5 sharp back blows between the shoulder blades with the heel of your hand. Check if blockage cleared. Step 3: If back blows fail, give up to 5 abdominal thrusts (Heimlich maneuver): Stand behind them, place arms around waist, lean them forward. Form a fist with one hand and place the thumb side just above their navel (belly button). Grasp fist with your other hand and pull inward and upward sharply. Alternate 5 back blows and 5 abdominal thrusts. If casualty becomes unconscious, lower carefully to the ground, call emergency services, and initiate CPR immediately.",
-      "visual_guide_key": "heimlich"
+      "visual_guide_key": "heimlich",
+      "page_number": "Clinical Sec. 1.2, p. 4-6"
     },
     {
       "section_name": "Acute Severe Asthma Exacerbation",
-      "keywords": ["asthma attack", "inhaler", "wheezing", "cannot speak in full sentences", "gasping for air", "bronchospasm"],
+      "keywords": [
+        "asthma attack",
+        "inhaler",
+        "wheezing",
+        "cannot speak in full sentences",
+        "gasping for air",
+        "bronchospasm"
+      ],
       "content": "Recognize acute severe asthma: Casualty is breathless, unable to complete sentences in one breath, has rapid pulse, and audible wheezing. Keep casualty seated upright leaning slightly forward (do NOT let them lie down). Help them administer their quick-relief bronchodilator inhaler (usually blue Salbutamol / Albuterol): 1 puff every 30 to 60 seconds through a spacer if available, up to 10 puffs. If there is no improvement after 10 puffs, or symptoms worsen (drowsiness, cyanosis, exhaustion), call 911 / 999 / 112 immediately. Repeat inhaler doses every 5 minutes while waiting for paramedics.",
-      "visual_guide_key": "recovery_position"
+      "visual_guide_key": "recovery_position",
+      "page_number": "Clinical Sec. 2.4, p. 11-13"
     }
-  ]
+  ],
+  "document_id": "kb-respiratory-002",
+  "publishing_organization": "National Health Service (NHS UK)",
+  "version": "v2024.2",
+  "last_reviewed_date": "2024-09-05",
+  "review_status": "Verified",
+  "document_type": "Emergency Protocol"
 }

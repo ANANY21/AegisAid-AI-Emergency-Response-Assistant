@@ -12,9 +12,26 @@
   "sections": [
     {
       "section_name": "Anaphylaxis Recognition and Epinephrine Administration",
-      "keywords": ["anaphylaxis", "severe allergy", "bee sting allergy", "peanut allergy", "epipen", "swollen tongue", "swollen throat", "hives", "stridor"],
+      "keywords": [
+        "anaphylaxis",
+        "severe allergy",
+        "bee sting allergy",
+        "peanut allergy",
+        "epipen",
+        "swollen tongue",
+        "swollen throat",
+        "hives",
+        "stridor"
+      ],
       "content": "Anaphylaxis is a rapid-onset, life-threatening allergic reaction. Symptoms include diffuse urticaria (hives), swelling of lips, tongue, or throat (angioedema), difficulty breathing, wheezing, throat tightness, hoarse voice, abdominal cramping, and hypotension (dizziness, collapse). First step: Administer Epinephrine (Adrenaline) autoinjector immediately into the outer mid-thigh (anterolateral thigh muscle). Hold firmly against thigh for 3 to 10 seconds according to device instructions. Call 911 immediately. Lay the person flat on their back with legs elevated unless they are vomiting or having severe breathing difficulty (in which case allow them to sit upright with legs out). Do NOT let them stand up or walk. If symptoms do not improve within 5 to 15 minutes, administer a second epinephrine autoinjector in the opposite thigh.",
-      "visual_guide_key": "recovery_position"
+      "visual_guide_key": "recovery_position",
+      "page_number": "Section 3, p. 5-7"
     }
-  ]
+  ],
+  "document_id": "kb-allergy-005",
+  "publishing_organization": "World Allergy Organization (WAO) / AHA",
+  "version": "v2023.2",
+  "last_reviewed_date": "2024-05-18",
+  "review_status": "Verified",
+  "document_type": "Consensus Summary"
 }

@@ -12,15 +12,39 @@
   "sections": [
     {
       "section_name": "Suspected Opioid Overdose and Naloxone (Narcan) Administration",
-      "keywords": ["overdose", "opioid", "heroin", "fentanyl", "unresponsive", "pinpoint pupils", "slow shallow breathing", "narcan", "naloxone"],
+      "keywords": [
+        "overdose",
+        "opioid",
+        "heroin",
+        "fentanyl",
+        "unresponsive",
+        "pinpoint pupils",
+        "slow shallow breathing",
+        "narcan",
+        "naloxone"
+      ],
       "content": "Signs of opioid overdose: Unresponsiveness to shouting/sternal rub, extremely slow or absent breathing (fewer than 6 breaths per minute), gurgling or snoring sounds ('death rattle'), pinpoint pupils, blue or grayish fingernails and lips. Call 911 immediately. Administer Naloxone (Narcan) nasal spray: Peel package, place nozzle in one nostril, press plunger firmly to spray entire dose into nose. If victim does not wake up or breathe normally within 2 to 3 minutes, give a second dose in the other nostril. If not breathing, perform rescue breathing or CPR immediately. If breathing resumes, place victim in the recovery position on their side, as naloxone may induce sudden nausea and vomiting.",
-      "visual_guide_key": "recovery_position"
+      "visual_guide_key": "recovery_position",
+      "page_number": "Naloxone Protocol, p. 6-9"
     },
     {
       "section_name": "Chemical Ingestion and General Toxin Exposure",
-      "keywords": ["swallowed bleach", "cleaner ingestion", "acid burn in mouth", "drank chemical", "battery ingestion"],
+      "keywords": [
+        "swallowed bleach",
+        "cleaner ingestion",
+        "acid burn in mouth",
+        "drank chemical",
+        "battery ingestion"
+      ],
       "content": "If a hazardous household chemical, pesticide, acid, or caustic cleaner was ingested: Call Poison Control (1-800-222-1222 in US) or local emergency services immediately. Do NOT induce vomiting under any circumstances, as acids and alkalis will burn the esophagus and airway twice. Do NOT give large quantities of fluids. If the patient has vomited spontaneously, clear their mouth and preserve the vomit sample or container for medical personnel. Check for chemical burns around lips or mouth. If patient becomes drowsy, place in the recovery position.",
-      "visual_guide_key": "recovery_position"
+      "visual_guide_key": "recovery_position",
+      "page_number": "Toxic Ingestion Sec. 3, p. 18-20"
     }
-  ]
+  ],
+  "document_id": "kb-poison-007",
+  "publishing_organization": "CDC & World Health Organization (WHO)",
+  "version": "v2023.5",
+  "last_reviewed_date": "2024-07-04",
+  "review_status": "Verified",
+  "document_type": "Emergency Protocol"
 }

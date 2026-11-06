@@ -3,6 +3,7 @@ from typing import List, Optional, Dict, Any
 from enum import Enum
 from .classification import PriorityLevel
 from .retrieval import RelevanceStatus, RetrievedChunk
+from .sources import CitationDetail, EvidenceVerificationSummary
 
 class SystemOutcome(str, Enum):
     SUFFICIENT_EVIDENCE = "SUFFICIENT_EVIDENCE"
@@ -37,6 +38,10 @@ class EmergencyResponse(BaseModel):
     what_to_avoid: List[str] = Field(default_factory=list)
     when_to_seek_immediate_care: str
     sources: List[Dict[str, Any]] = Field(default_factory=list)
+    citations: List[CitationDetail] = Field(default_factory=list)
+    unsupported_claims: List[str] = Field(default_factory=list)
+    evidence_verification: Optional[EvidenceVerificationSummary] = None
+    shap_summary: Optional[Dict[str, Any]] = None
     confidence_breakdown: ConfidenceBreakdown
     clarification_questions: List[str] = Field(default_factory=list)
     disclaimer: str = (

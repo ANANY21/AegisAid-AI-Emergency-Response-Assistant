@@ -12,15 +12,35 @@
   "sections": [
     {
       "section_name": "Infant Choking Under 1 Year of Age",
-      "keywords": ["baby choking", "infant choking", "cannot cry", "silent cry", "blue baby", "swallowed toy"],
+      "keywords": [
+        "baby choking",
+        "infant choking",
+        "cannot cry",
+        "silent cry",
+        "blue baby",
+        "swallowed toy"
+      ],
       "content": "If an infant under 1 year is choking and cannot cry, cough, or breathe: Step 1: Sit down and lay infant face-down along your forearm, supporting their head and jaw with your hand (keep infant's head lower than chest). Rest forearm on your thigh. Step 2: Deliver up to 5 firm back slaps between the infant's shoulder blades using the heel of your hand. Step 3: If foreign object is not dislodged, carefully turn infant face-up onto your other forearm, still supporting the head lower than chest. Deliver up to 5 chest thrusts in center of chest (just below nipple line) using 2 fingers to a depth of about 1.5 inches (4 cm). Alternate 5 back slaps and 5 chest thrusts until object comes out. If infant loses consciousness, begin infant CPR: 30 compressions (2 fingers, 1.5 inches deep, 100-120/min) followed by 2 gentle breaths covering both mouth and nose.",
-      "visual_guide_key": "heimlich"
+      "visual_guide_key": "heimlich",
+      "page_number": "Infant BLS, p. 7-10"
     },
     {
       "section_name": "Pediatric Febrile Seizures",
-      "keywords": ["baby convulsion", "toddler shaking with fever", "febrile seizure", "high fever jerking"],
+      "keywords": [
+        "baby convulsion",
+        "toddler shaking with fever",
+        "febrile seizure",
+        "high fever jerking"
+      ],
       "content": "Febrile seizures typically occur in children between 6 months and 5 years during rapid body temperature spikes. The child stiffens, twitches rhythmically, and loses awareness for 1 to 3 minutes. Protect child from injury: Lay them on their side on a soft floor (recovery position) to prevent choking on saliva. Loosen clothing. Do NOT restrain limbs. Do NOT put anything into the mouth. Do NOT immerse the child in cold water or ice baths (causes shivering and dangerous rebound core temperature spikes). Call emergency services if the seizure lasts over 5 minutes, if the child has difficulty breathing afterwards, or if it is their first seizure.",
-      "visual_guide_key": "recovery_position"
+      "visual_guide_key": "recovery_position",
+      "page_number": "Pediatric Seizure, p. 22-25"
     }
-  ]
+  ],
+  "document_id": "kb-pediatric-008",
+  "publishing_organization": "American Heart Association (AHA) Pediatric Guidelines",
+  "version": "v2024.1",
+  "last_reviewed_date": "2024-09-12",
+  "review_status": "Verified",
+  "document_type": "Clinical Guideline"
 }

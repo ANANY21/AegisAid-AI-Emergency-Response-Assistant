@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { EmergencyResponse, PriorityLevel } from '../types';
 import { PriorityBadge } from '../components/PriorityBadge';
 import { VisualGuide } from '../components/VisualGuide';
+import { ExplainabilityModal } from '../components/ExplainabilityModal';
 import { 
   AlertOctagon, PhoneCall, CheckCircle, AlertTriangle, ShieldCheck, 
-  ExternalLink, HelpCircle, FileText, XCircle, ArrowLeft, Hospital, RefreshCw 
+  ExternalLink, HelpCircle, FileText, XCircle, ArrowLeft, Hospital, 
+  Brain, BookOpen, FileCheck, Clock, ShieldAlert, Sparkles, Bookmark
 } from 'lucide-react';
 
 interface ResultViewProps {
@@ -14,17 +16,54 @@ interface ResultViewProps {
 }
 
 export const ResultView: React.FC<ResultViewProps> = ({ response, onNewEmergency, onFindHospitals }) => {
-  const [showSourcesModal, setShowSourcesModal] = useState(false);
+  const [showExplainModal, setShowExplainModal] = useState(false);
+  const [highlightedSource, setHighlightedSource] = useState<number | null>(null);
 
   const isCritical = response.priority === 'CRITICAL' || response.is_critical_bypass;
   const outcome = response.outcome;
   const breakdown = response.confidence_breakdown;
+  const citations = response.citations || [];
+  const unsupportedClaims = response.unsupported_claims || [];
+  const evidenceVer = response.evidence_verification;
+
+  const scrollToSource = (index: number) => {
+    setHighlightedSource(index);
+    const elem = document.getElementById(`source-card-${index}`);
+    if (elem) {
+      elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    setTimeout(() => {
+      setHighlightedSource(null);
+    }, 2500);
+  };
+
+  // Helper to render text with interactive [1], [2] citation chips
+  const renderTextWithCitations = (text: string) => {
+    const parts = text.split(/(\[\d+\])/g);
+    return parts.map((part, i) => {
+      const match = part.match(/\[(\d+)\]/);
+      if (match) {
+        const idx = parseInt(match[1], 10);
+        return (
+          <button
+            key={i}
+            onClick={() => scrollToSource(idx)}
+            className="inline-flex items-center px-1.5 py-0.2 mx-0.5 rounded text-[11px] font-mono font-bold bg-medic-teal/20 text-medic-teal hover:bg-medic-teal hover:text-navy-950 transition-colors border border-medic-teal/30 align-baseline cursor-pointer"
+            title={`Jump to Source [${idx}]`}
+          >
+            [{idx}]
+          </button>
+        );
+      }
+      return part;
+    });
+  };
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-16">
       
-      {/* Top Navigation & Status */}
-      <div className="flex items-center justify-between">
+      {/* Top Navigation & Actions */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <button
           onClick={onNewEmergency}
           className="text-xs font-semibold text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors"
@@ -33,7 +72,17 @@ export const ResultView: React.FC<ResultViewProps> = ({ response, onNewEmergency
           <span>New Emergency Assessment</span>
         </button>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
+          {/* Explain Prediction (SHAP) Action Button */}
+          <button
+            onClick={() => setShowExplainModal(true)}
+            className="px-3 py-1.5 rounded-xl bg-navy-800 hover:bg-navy-700 text-medic-teal font-extrabold text-xs flex items-center gap-1.5 border border-medic-teal/30 hover:border-medic-teal/60 transition-all shadow-md"
+            title="Inspect real SHAP TreeExplainer feature attributions"
+          >
+            <Brain className="w-4 h-4 text-medic-teal" />
+            <span>Explain Decision (SHAP)</span>
+          </button>
+
           <PriorityBadge priority={response.priority} confidence={breakdown.classifier_confidence} />
         </div>
       </div>
@@ -93,9 +142,13 @@ export const ResultView: React.FC<ResultViewProps> = ({ response, onNewEmergency
       )}
 
       {/* Summary Box */}
-      <div className="bg-navy-900 border border-navy-800 rounded-2xl p-6 shadow-lg">
-        <h2 className="text-xs font-black uppercase text-slate-400 tracking-wider mb-2">Emergency Summary</h2>
-        <p className="text-base text-slate-100 font-medium leading-relaxed">{response.summary}</p>
+      <div className="bg-navy-900 border border-navy-800 rounded-2xl p-6 shadow-lg space-y-4">
+        <div>
+          <h2 className="text-xs font-black uppercase text-slate-400 tracking-wider mb-2">Emergency Summary</h2>
+          <p className="text-base text-slate-100 font-medium leading-relaxed">
+            {renderTextWithCitations(response.summary)}
+          </p>
+        </div>
         
         {/* Confidence Breakdown Indicators */}
         <div className="mt-4 pt-4 border-t border-navy-800 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
@@ -139,7 +192,9 @@ export const ResultView: React.FC<ResultViewProps> = ({ response, onNewEmergency
                 </div>
                 <div className="flex-1">
                   <h3 className="text-base font-bold text-white mb-1">{step.action}</h3>
-                  <p className="text-sm text-slate-300 leading-relaxed">{step.details}</p>
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    {renderTextWithCitations(step.details)}
+                  </p>
                   
                   {step.caution && (
                     <div className="mt-2 text-xs text-amber-300 font-medium flex items-center gap-1.5">
@@ -172,7 +227,7 @@ export const ResultView: React.FC<ResultViewProps> = ({ response, onNewEmergency
             {response.precautions.map((prec, i) => (
               <li key={i} className="flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
-                <span>{prec}</span>
+                <span>{renderTextWithCitations(prec)}</span>
               </li>
             ))}
           </ul>
@@ -188,7 +243,7 @@ export const ResultView: React.FC<ResultViewProps> = ({ response, onNewEmergency
             {response.what_to_avoid.map((avoid, i) => (
               <li key={i} className="flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emergency-500 mt-1.5 shrink-0" />
-                <span>{avoid}</span>
+                <span>{renderTextWithCitations(avoid)}</span>
               </li>
             ))}
           </ul>
@@ -202,76 +257,186 @@ export const ResultView: React.FC<ResultViewProps> = ({ response, onNewEmergency
         <p>{response.when_to_seek_immediate_care}</p>
       </div>
 
-      {/* Provenance & Medical Sources */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-navy-950 border border-navy-800 text-xs">
-        <div className="flex items-center gap-2 text-slate-400">
-          <FileText className="w-4 h-4 text-medic-teal" />
-          <span>Grounded in {response.sources.length} verified medical protocol references</span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setShowSourcesModal(true)}
-            className="text-xs text-medic-teal hover:underline font-bold flex items-center gap-1"
-          >
-            <span>View Medical Citations</span>
-            <ExternalLink className="w-3 h-3" />
-          </button>
-
-          <button
-            onClick={onFindHospitals}
-            className="px-4 py-2 rounded-lg bg-navy-800 hover:bg-navy-700 text-white font-bold text-xs flex items-center gap-1.5 border border-navy-700 transition-colors"
-          >
-            <Hospital className="w-3.5 h-3.5 text-medic-teal" />
-            <span>Find Nearby Trauma Centers</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Medical Citations Modal */}
-      {showSourcesModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-navy-900 border border-navy-700 rounded-2xl max-w-2xl w-full p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-navy-800 pb-3">
-              <h3 className="text-base font-bold text-white">Retrieved Evidence Provenance</h3>
-              <button
-                onClick={() => setShowSourcesModal(false)}
-                className="text-slate-400 hover:text-white text-sm font-bold"
-              >
-                ✕ Close
-              </button>
-            </div>
-
-            <div className="space-y-3">
-              {response.sources.map((s, idx) => (
-                <div key={idx} className="p-3.5 rounded-xl bg-navy-950 border border-navy-800 text-xs space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-white">{s.document_title}</span>
-                    <span className="font-mono text-medic-teal">Score: {(s.relevance_score * 100).toFixed(1)}%</span>
-                  </div>
-                  <p className="text-slate-400">Source: <strong className="text-slate-300">{s.source_name}</strong> | Section: {s.section}</p>
-                  {s.source_url && (
-                    <a
-                      href={s.source_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-medic-teal hover:underline flex items-center gap-1 mt-1 text-[11px]"
-                    >
-                      <span>Official Protocol URL</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                </div>
-              ))}
-            </div>
+      {/* Unsupported Claims Alert (if detected by claim-level verification) */}
+      {unsupportedClaims.length > 0 && (
+        <div className="p-4 rounded-xl bg-amber-950/60 border border-amber-500/40 text-amber-200 text-xs space-y-2">
+          <div className="flex items-center gap-2 font-bold text-amber-300">
+            <AlertTriangle className="w-4 h-4 text-amber-400" />
+            <span>Evidentiary Support Notice (Claim-Level Verification Alert)</span>
           </div>
+          <ul className="list-disc pl-5 space-y-1 text-slate-300 text-[11px]">
+            {unsupportedClaims.map((claim, idx) => (
+              <li key={idx}>{claim}</li>
+            ))}
+          </ul>
         </div>
       )}
 
+      {/* Dedicated Section: Medical Evidence & Sources */}
+      <div id="medical-sources" className="space-y-4 pt-4 border-t border-navy-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h2 className="text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-medic-teal" />
+              <span>Medical Evidence & Sources</span>
+            </h2>
+            <p className="text-xs text-slate-400">
+              Validated clinical guidelines and protocols grounding the above first-aid instructions
+            </p>
+          </div>
+
+          {/* Verification Status Pill */}
+          {evidenceVer && (
+            <div className="flex items-center gap-2 text-xs">
+              <span className={`px-2.5 py-1 rounded-lg font-bold border flex items-center gap-1.5 ${
+                evidenceVer.verification_passed 
+                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' 
+                  : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+              }`}>
+                <FileCheck className="w-3.5 h-3.5" />
+                <span>{evidenceVer.verification_passed ? '100% Evidence Grounded' : 'Partial Evidence'}</span>
+              </span>
+              <span className="font-mono text-slate-400 text-[11px]">
+                Grounding: {(evidenceVer.mean_grounding_score * 100).toFixed(0)}%
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Source Cards Grid */}
+        <div className="grid grid-cols-1 gap-4">
+          {citations.length > 0 ? (
+            citations.map((c) => (
+              <div 
+                key={c.citation_index}
+                id={`source-card-${c.citation_index}`}
+                className={`p-5 rounded-2xl bg-navy-900 border transition-all duration-300 space-y-3 ${
+                  highlightedSource === c.citation_index
+                    ? 'border-medic-teal ring-2 ring-medic-teal/40 bg-navy-850 shadow-xl'
+                    : 'border-navy-800 hover:border-navy-700'
+                }`}
+              >
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 rounded-md text-xs font-mono font-black bg-medic-teal text-navy-950">
+                        {c.citation_tag}
+                      </span>
+                      <h3 className="text-sm font-bold text-white">{c.document_title}</h3>
+                    </div>
+                    <p className="text-xs text-slate-400">
+                      Organization: <strong className="text-slate-300">{c.publishing_organization}</strong>
+                      {c.page_number && <span> &bull; {c.page_number}</span>}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                      c.review_status === 'Verified' 
+                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                        : c.review_status === 'Pending Review'
+                        ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                        : 'bg-emergency-500/10 text-emergency-400 border-emergency-500/30'
+                    }`}>
+                      {c.review_status}
+                    </span>
+
+                    <span className="text-[11px] font-mono text-medic-teal bg-navy-950 px-2 py-0.5 rounded border border-navy-800">
+                      Support: {(c.claim_support_score * 100).toFixed(0)}%
+                    </span>
+                  </div>
+                </div>
+
+                {/* Section & Cited Excerpt */}
+                <div className="p-3 rounded-xl bg-navy-950 border border-navy-800 text-xs space-y-1">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                    Section: {c.section}
+                  </span>
+                  <p className="text-slate-300 italic leading-relaxed">
+                    &ldquo;{c.cited_excerpt}&rdquo;
+                  </p>
+                </div>
+
+                {/* Footer Link & Doc ID */}
+                <div className="flex items-center justify-between text-xs pt-1">
+                  <span className="font-mono text-[10px] text-slate-500">
+                    ID: {c.document_id} &bull; Type: {c.document_type}
+                  </span>
+
+                  {c.source_url && (
+                    <a
+                      href={c.source_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs font-bold text-medic-teal hover:underline flex items-center gap-1"
+                    >
+                      <span>View Official Guideline</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))
+          ) : (
+            /* Fallback to basic sources if citations array empty */
+            response.sources.map((s, idx) => (
+              <div key={idx} className="p-4 rounded-xl bg-navy-900 border border-navy-800 text-xs space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-white">[{idx+1}] {s.document_title}</span>
+                  <span className="font-mono text-medic-teal">Relevance: {(s.relevance_score * 100).toFixed(1)}%</span>
+                </div>
+                <p className="text-slate-400">Publishing Org: {s.source_name} | Section: {s.section}</p>
+                {s.source_url && (
+                  <a
+                    href={s.source_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-medic-teal hover:underline flex items-center gap-1 text-[11px]"
+                  >
+                    <span>Official Protocol URL</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Trauma Center Locator CTA Banner */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-navy-900 via-navy-850 to-navy-900 border border-navy-700 shadow-lg">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-medic-teal/10 border border-medic-teal/30 text-medic-teal">
+              <Hospital className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-white">Need Hospitalization or Trauma Care?</h4>
+              <p className="text-xs text-slate-400">Locate certified emergency departments, trauma centers, and ICU beds nearby.</p>
+            </div>
+          </div>
+
+          <button
+            onClick={onFindHospitals}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-medic-teal hover:bg-medic-teal-light text-navy-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg transition-all shrink-0"
+          >
+            <Hospital className="w-4 h-4" />
+            <span>Find Nearby Trauma Centers</span>
+          </button>
+        </div>
+
+      </div>
+
       {/* Safety Disclaimer Footer */}
-      <p className="text-[11px] text-slate-500 text-center leading-relaxed max-w-2xl mx-auto">
+      <p className="text-[11px] text-slate-500 text-center leading-relaxed max-w-2xl mx-auto pt-4 border-t border-navy-900">
         {response.disclaimer}
       </p>
+
+      {/* Explainable AI (SHAP) Modal */}
+      <ExplainabilityModal
+        isOpen={showExplainModal}
+        onClose={() => setShowExplainModal(false)}
+        initialExplanation={response.shap_summary}
+        emergencyText={response.summary}
+      />
 
     </div>
   );

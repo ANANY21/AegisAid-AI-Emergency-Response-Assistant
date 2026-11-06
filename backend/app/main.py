@@ -8,7 +8,7 @@ from pathlib import Path
 from .config import settings
 from .core.logging import logger
 from .core.exceptions import EmergencyAppException
-from .api import emergency, classification, retrieval, hospitals, history, evaluation
+from .api import emergency, classification, retrieval, hospitals, history, evaluation, explainability, sources
 from .services.rag_service import rag_service
 from .models.classifier import TriageClassifier
 
@@ -74,6 +74,8 @@ app.include_router(retrieval.router)
 app.include_router(hospitals.router)
 app.include_router(history.router)
 app.include_router(evaluation.router)
+app.include_router(explainability.router)
+app.include_router(sources.router)
 
 # Mount frontend production build if present (MUST BE AT THE END)
 dist_path = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"

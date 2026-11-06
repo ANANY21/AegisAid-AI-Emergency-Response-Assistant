@@ -20,6 +20,13 @@ class RetrievedChunk(BaseModel):
     rerank_score: Optional[float] = None
     is_relevant: bool = True
     contraindications: List[str] = Field(default_factory=list)
+    document_id: Optional[str] = None
+    publishing_organization: Optional[str] = None
+    version: Optional[str] = None
+    last_reviewed_date: Optional[str] = None
+    review_status: str = "Verified"
+    document_type: str = "Clinical Guideline"
+    page_number: Optional[str] = None
 
 class RetrievalValidationResult(BaseModel):
     status: RelevanceStatus

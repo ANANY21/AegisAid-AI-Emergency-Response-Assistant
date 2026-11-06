@@ -7,11 +7,12 @@ from ..schemas.classification import ClassificationResult
 SYSTEM_EMERGENCY_ROLE = """You are AegisAid's Clinical Response Engine, an expert healthcare decision-support system.
 YOUR STRICT MANDATES:
 1. Ground every medical instruction ONLY in the provided verified evidence. NEVER invent or hallucinate first-aid steps or treatments.
-2. State all actions in clear, direct, step-by-step imperative voice (e.g. "Step 1: Apply direct pressure").
-3. Include critical contraindications (what NOT to do) to prevent user harm.
-4. Always state uncertainty when information is incomplete. Never state a definitive medical diagnosis.
-5. Emphasize that you are an AI decision-support assistant and not a replacement for emergency medical personnel.
-6. Provide output in strict JSON format conforming to the requested schema.
+2. Explicitly cite your sources directly in your summary and each first-aid step using bracketed reference tags like [1] or [2] corresponding to the numbered evidence sources.
+3. State all actions in clear, direct, step-by-step imperative voice (e.g. "Step 1: Apply direct pressure [1]").
+4. Include critical contraindications (what NOT to do) to prevent user harm.
+5. Always state uncertainty when information is incomplete. Never state a definitive medical diagnosis.
+6. Emphasize that you are an AI decision-support assistant and not a replacement for emergency medical personnel.
+7. Provide output in strict JSON format conforming to the requested schema.
 """
 
 def build_first_aid_prompt(
@@ -21,11 +22,11 @@ def build_first_aid_prompt(
     evidence_chunks: List[RetrievedChunk]
 ) -> str:
     """
-    Constructs an evidence-grounded prompt for first-aid instruction generation.
+    Constructs an evidence-grounded prompt for first-aid instruction generation with explicit citation indexing.
     """
     evidence_text = "\n\n".join([
-        f"--- EVIDENCE SOURCE [{idx+1}]: {c.document_title} ({c.source_name}) ---\n"
-        f"SECTION: {c.section}\n"
+        f"--- EVIDENCE SOURCE [{idx+1}]: {c.document_title} ({c.publishing_organization or c.source_name}) ---\n"
+        f"DOCUMENT ID: {c.document_id} | VERSION: {c.version or 'v1.0'} | SECTION: {c.section} ({c.page_number or 'Sec. 1'})\n"
         f"CONTENT: {c.content}\n"
         f"CONTRAINDICATIONS: {', '.join(c.contraindications) if c.contraindications else 'None listed'}"
         for idx, c in enumerate(evidence_chunks)
@@ -44,14 +45,15 @@ def build_first_aid_prompt(
 
 [TASK]
 Generate a grounded, actionable emergency response adhering strictly to the retrieved evidence above.
+Include citation tags [1], [2], etc. in the step details to trace back to the exact evidence source.
 Return ONLY valid JSON matching this exact structure:
 {{
-  "summary": "Concise 1-2 sentence emergency situation summary",
+  "summary": "Concise 1-2 sentence emergency situation summary referencing [1] if applicable",
   "first_aid_steps": [
     {{
       "step_number": 1,
       "action": "Brief action heading",
-      "details": "Step-by-step instruction grounded in evidence",
+      "details": "Step-by-step instruction grounded in evidence, citing source e.g. [1]",
       "caution": "Immediate caution or safety warning if applicable",
       "visual_guide_key": "cpr" | "heimlich" | "pressure_bandage" | "burns_water" | "recovery_position" | null
     }}
@@ -61,6 +63,7 @@ Return ONLY valid JSON matching this exact structure:
   "when_to_seek_immediate_care": "Clear criteria for when symptoms mandate urgent hospital transport"
 }}
 """
+    return prompt
     return prompt
 
 def build_clarification_prompt(

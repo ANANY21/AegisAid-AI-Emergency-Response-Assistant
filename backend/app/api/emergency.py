@@ -15,6 +15,7 @@ from ..services.rag_service import rag_service
 from ..services.retrieval_validation import retrieval_validator
 from ..services.confidence_engine import safety_engine
 from ..services.generation_service import generation_service
+from ..services.shap_service import shap_service
 from ..config import settings
 from ..core.logging import logger
 
@@ -120,6 +121,25 @@ def analyze_emergency(
         has_altered_mental_status=has_ams
     )
 
+    # Stage 4b: Explainable AI Attribution (SHAP TreeExplainer)
+    shap_summary = None
+    try:
+        shap_summary = shap_service.explain_prediction(
+            text=cleaned_text,
+            age=float(extracted_info.age if extracted_info.age is not None else 35.0),
+            duration_minutes=30.0,
+            has_breathing_difficulty=has_breathing,
+            has_unconsciousness=has_unconscious,
+            has_severe_bleeding=has_bleeding,
+            has_chest_pain=has_chest,
+            has_stroke_symptoms=has_stroke,
+            has_anaphylaxis_symptoms=has_anaphylaxis,
+            has_severe_trauma=has_trauma,
+            has_altered_mental_status=has_ams
+        )
+    except Exception as e:
+        logger.warning(f"SHAP explanation generation skipped for session {session_id}: {e}")
+
     # Stage 5: RAG Retrieval
     query_for_rag = f"{extracted_info.incident_type} {cleaned_text}"
     retrieved_chunks = rag_service.retrieve(query_for_rag, top_k=settings.RETRIEVAL_TOP_K)
@@ -145,7 +165,8 @@ def analyze_emergency(
         extracted_info=extracted_info,
         classification=classification,
         retrieval_val=retrieval_val,
-        safety_evaluation=safety_evaluation
+        safety_evaluation=safety_evaluation,
+        shap_summary=shap_summary
     )
 
     # Stage 9: Session Persistence

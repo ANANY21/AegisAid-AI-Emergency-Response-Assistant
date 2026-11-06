@@ -12,15 +12,39 @@
   "sections": [
     {
       "section_name": "Acute Stroke Recognition (BE-FAST Protocol)",
-      "keywords": ["stroke", "face droop", "arm weakness", "slurred speech", "loss of balance", "vision loss", "sudden numbness", "be fast"],
+      "keywords": [
+        "stroke",
+        "face droop",
+        "arm weakness",
+        "slurred speech",
+        "loss of balance",
+        "vision loss",
+        "sudden numbness",
+        "be fast"
+      ],
       "content": "Time lost is brain lost. Use the BE-FAST assessment: B (Balance): Sudden loss of balance or coordination; E (Eyes): Sudden vision change or blurriness in one or both eyes; F (Face): Ask person to smile; does one side of face droop?; A (Arms): Ask person to raise both arms; does one arm drift downward?; S (Speech): Ask person to repeat a simple sentence; is speech slurred or strange?; T (Time): If any of these signs are present, call 911 immediately and note the EXACT time symptoms began (critical for thrombolytic eligibility within 3 to 4.5 hours). Keep patient lying down with head and shoulders slightly elevated. Do NOT give aspirin, food, or drink.",
-      "visual_guide_key": "recovery_position"
+      "visual_guide_key": "recovery_position",
+      "page_number": "Section 2.1, p. 11-14"
     },
     {
       "section_name": "Active Tonic-Clonic Seizure First Aid",
-      "keywords": ["seizure", "convulsions", "epilepsy fit", "shaking", "foaming at mouth", "loss of consciousness"],
+      "keywords": [
+        "seizure",
+        "convulsions",
+        "epilepsy fit",
+        "shaking",
+        "foaming at mouth",
+        "loss of consciousness"
+      ],
       "content": "During active convulsions: Stay calm and time the seizure. Clear the surrounding area of hard, sharp, or hazardous objects to prevent head trauma. Cushion the patient's head with a soft jacket or pillow. Loosen tight neckwear. Gently roll the person onto their side into the recovery position as soon as active jerking stops to keep airway clear of saliva or vomitus. NEVER put fingers, spoons, or any objects into the person's mouth (they will not swallow their tongue). NEVER hold down or restrain the person. Call 911 if seizure lasts longer than 5 minutes, repeats without regaining consciousness, occurs in water, or if the person is pregnant or injured.",
-      "visual_guide_key": "recovery_position"
+      "visual_guide_key": "recovery_position",
+      "page_number": "Section 4.3, p. 32-35"
     }
-  ]
+  ],
+  "document_id": "kb-stroke-006",
+  "publishing_organization": "American Heart Association / American Stroke Association",
+  "version": "v2024.1",
+  "last_reviewed_date": "2024-08-30",
+  "review_status": "Verified",
+  "document_type": "Clinical Guideline"
 }

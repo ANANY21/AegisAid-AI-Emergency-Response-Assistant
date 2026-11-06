@@ -38,14 +38,21 @@ class MedicalRAGService:
                     self.documents.append(doc)
                     
                     doc_title = doc.get("document_title", file_path.stem)
-                    source_name = doc.get("source_name", "Official Medical Protocol")
+                    doc_id = doc.get("document_id") or doc.get("id", file_path.stem)
+                    pub_org = doc.get("publishing_organization") or doc.get("source_name", "Official Medical Protocol")
+                    source_name = pub_org
                     source_url = doc.get("source_url")
+                    version = doc.get("version", "v1.0")
                     pub_date = doc.get("publication_date")
+                    last_reviewed = doc.get("last_reviewed_date", pub_date)
+                    review_status = doc.get("review_status", "Verified")
+                    doc_type = doc.get("document_type", "Clinical Guideline")
                     contraindications = doc.get("contraindications", [])
                     category = doc.get("category", "general")
                     
                     for idx, sec in enumerate(doc.get("sections", [])):
                         sec_name = sec.get("section_name", f"Section {idx+1}")
+                        page_number = sec.get("page_number", f"Sec. {idx+1}")
                         content = sec.get("content", "")
                         keywords = sec.get("keywords", [])
                         visual_guide_key = sec.get("visual_guide_key")
@@ -53,11 +60,18 @@ class MedicalRAGService:
                         chunk_text = f"{doc_title} - {sec_name}. {content} Keywords: {', '.join(keywords)}"
                         
                         chunk_data = {
-                            "chunk_id": f"{doc.get('id', file_path.stem)}-chunk-{idx+1}",
+                            "chunk_id": f"{doc_id}-chunk-{idx+1}",
+                            "document_id": doc_id,
                             "document_title": doc_title,
+                            "publishing_organization": pub_org,
                             "source_name": source_name,
                             "source_url": source_url,
+                            "version": version,
                             "publication_date": pub_date,
+                            "last_reviewed_date": last_reviewed,
+                            "review_status": review_status,
+                            "document_type": doc_type,
+                            "page_number": page_number,
                             "section": sec_name,
                             "content": content,
                             "keywords": keywords,
@@ -109,11 +123,18 @@ class MedicalRAGService:
             c = self.chunks[idx]
             results.append(RetrievedChunk(
                 chunk_id=c["chunk_id"],
+                document_id=c.get("document_id"),
                 document_title=c["document_title"],
+                publishing_organization=c.get("publishing_organization", c["source_name"]),
                 source_name=c["source_name"],
                 source_url=c["source_url"],
+                version=c.get("version", "v1.0"),
                 publication_date=c["publication_date"],
+                last_reviewed_date=c.get("last_reviewed_date", c["publication_date"]),
+                review_status=c.get("review_status", "Verified"),
+                document_type=c.get("document_type", "Clinical Guideline"),
                 section=c["section"],
+                page_number=c.get("page_number"),
                 content=c["content"],
                 similarity_score=round(float(sim), 4),
                 contraindications=c["contraindications"]

@@ -12,15 +12,41 @@
   "sections": [
     {
       "section_name": "Adult Sudden Cardiac Arrest Recognition & Immediate Actions",
-      "keywords": ["cpr", "cardiac arrest", "chest compressions", "unresponsive", "not breathing", "heart stopped", "defibrillator", "aed"],
+      "keywords": [
+        "cpr",
+        "cardiac arrest",
+        "chest compressions",
+        "unresponsive",
+        "not breathing",
+        "heart stopped",
+        "defibrillator",
+        "aed"
+      ],
       "content": "Sudden Cardiac Arrest occurs when the heart suddenly stops beating. The person collapses, becomes unresponsive to shouting or tapping the shoulder, and is not breathing or only gasping (agonal gasps). Call 911 or local emergency services immediately and request an AED. Immediately begin hands-only CPR: Place the heel of one hand in the center of the chest, place the other hand on top, interlock fingers. Push hard and fast at 100 to 120 compressions per minute at a depth of at least 2 inches (5 cm) but no more than 2.4 inches. Allow full chest recoil between compressions. Continue without interruption until emergency medical personnel arrive or an AED is ready to analyze.",
-      "visual_guide_key": "cpr"
+      "visual_guide_key": "cpr",
+      "page_number": "Part 3, p. 12-15"
     },
     {
       "section_name": "Suspected Acute Myocardial Infarction (Heart Attack)",
-      "keywords": ["heart attack", "chest pain", "crushing pressure", "left arm pain", "jaw pain", "sweating", "shortness of breath", "angina"],
+      "keywords": [
+        "heart attack",
+        "chest pain",
+        "crushing pressure",
+        "left arm pain",
+        "jaw pain",
+        "sweating",
+        "shortness of breath",
+        "angina"
+      ],
       "content": "Symptoms of a heart attack include persistent crushing pressure, squeezing, or fullness in the center of the chest lasting more than a few minutes; pain radiating to left shoulder, arm, back, neck, or jaw; accompanied by shortness of breath, cold sweat, nausea, or lightheadedness. Call emergency services immediately. Keep the patient calm in a comfortable resting position (half-sitting with knees bent). If the patient is conscious and not allergic to aspirin with no active gastrointestinal bleeding, encourage chewing 325 mg non-enteric coated aspirin. Do NOT allow the patient to walk or exert themselves.",
-      "visual_guide_key": "recovery_position"
+      "visual_guide_key": "recovery_position",
+      "page_number": "Part 5, p. 28-31"
     }
-  ]
+  ],
+  "document_id": "kb-cardiac-001",
+  "publishing_organization": "American Heart Association (AHA)",
+  "version": "v2024.1",
+  "last_reviewed_date": "2026-11-06",
+  "review_status": "Verified",
+  "document_type": "Clinical Guideline"
 }

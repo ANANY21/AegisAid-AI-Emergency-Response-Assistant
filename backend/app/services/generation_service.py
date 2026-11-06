@@ -12,6 +12,8 @@ from ..schemas.response import (
     EmergencyResponse, SystemOutcome, FirstAidStep,
     ConfidenceBreakdown, RelevanceStatus
 )
+from ..schemas.sources import CitationDetail, EvidenceVerificationSummary
+from .citation_service import citation_service
 from .prompt_service import SYSTEM_EMERGENCY_ROLE, build_first_aid_prompt
 from ..core.logging import logger
 
@@ -180,7 +182,8 @@ class EmergencyGenerationService:
         extracted_info: ExtractedEmergencyInfo,
         classification: ClassificationResult,
         retrieval_val: RetrievalValidationResult,
-        safety_evaluation: Dict[str, Any]
+        safety_evaluation: Dict[str, Any],
+        shap_summary: Optional[Dict[str, Any]] = None
     ) -> EmergencyResponse:
         """
         Generates grounded, structured emergency response based on system outcome,
@@ -195,11 +198,18 @@ class EmergencyGenerationService:
         sources_meta = []
         for c in retrieval_val.top_chunks:
             sources_meta.append({
-                "source_name": c.source_name,
+                "document_id": c.document_id,
+                "source_name": c.publishing_organization or c.source_name,
                 "document_title": c.document_title,
+                "publishing_organization": c.publishing_organization or c.source_name,
+                "version": c.version or "v1.0",
                 "section": c.section,
+                "page_number": c.page_number,
                 "source_url": c.source_url,
                 "publication_date": c.publication_date,
+                "last_reviewed_date": c.last_reviewed_date,
+                "review_status": c.review_status,
+                "document_type": c.document_type,
                 "relevance_score": c.similarity_score
             })
 
@@ -227,6 +237,7 @@ class EmergencyGenerationService:
                 sources=[],
                 confidence_breakdown=confidence_breakdown,
                 clarification_questions=clarification_questions,
+                shap_summary=shap_summary,
                 generated_at=datetime.utcnow().isoformat(),
                 llm_provider="Safety Rule Engine (Ambiguity Guardrail)"
             )
@@ -258,6 +269,7 @@ class EmergencyGenerationService:
                 sources=[],
                 confidence_breakdown=confidence_breakdown,
                 clarification_questions=clarification_questions,
+                shap_summary=shap_summary,
                 generated_at=datetime.utcnow().isoformat(),
                 llm_provider="Safety Rule Engine (Relevance Threshold Escalation)"
             )
@@ -286,6 +298,7 @@ class EmergencyGenerationService:
                 sources=sources_meta,
                 confidence_breakdown=confidence_breakdown,
                 clarification_questions=[],
+                shap_summary=shap_summary,
                 generated_at=datetime.utcnow().isoformat(),
                 llm_provider="Safety Rule Engine (Conflict Guardrail)"
             )
@@ -376,6 +389,13 @@ class EmergencyGenerationService:
             when_to_seek = mapped["when_to_seek"]
             provider_label = "Deterministic Medical Protocol (AegisAid Core Engine)"
 
+        # Evidence verification & citation grounding
+        citations, unsupported_claims, evidence_ver = citation_service.verify_and_ground_citations(
+            first_aid_steps=[{"action": s.action, "details": s.details} for s in steps],
+            summary_text=summary,
+            retrieved_chunks=retrieval_val.top_chunks
+        )
+
         return EmergencyResponse(
             session_id=session_id,
             outcome=outcome,
@@ -389,6 +409,10 @@ class EmergencyGenerationService:
             what_to_avoid=what_to_avoid,
             when_to_seek_immediate_care=when_to_seek,
             sources=sources_meta,
+            citations=citations,
+            unsupported_claims=unsupported_claims,
+            evidence_verification=evidence_ver,
+            shap_summary=shap_summary,
             confidence_breakdown=confidence_breakdown,
             clarification_questions=clarification_questions,
             generated_at=datetime.utcnow().isoformat(),
