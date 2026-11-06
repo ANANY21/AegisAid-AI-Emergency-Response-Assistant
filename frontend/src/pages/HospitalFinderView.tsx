@@ -567,23 +567,43 @@ export const HospitalFinderView: React.FC = () => {
       {/* Attribution & Legal Notice */}
       <div className="p-4 rounded-2xl bg-navy-950 border border-navy-800 text-[11px] text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
         <div>
-          <span>{data?.provider_attribution || 'Powered by Google Maps Platform & Official Healthcare Directory'}</span>
+          <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+            <span className="font-bold text-slate-400">{data?.provider_attribution || 'Map data © OpenStreetMap contributors'}</span>
+            {data?.osm_api_key_configured && (
+              <span className="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800/60 text-[10px] font-bold">
+                OSM API Key Active
+              </span>
+            )}
+          </div>
           <p className="text-[10px] text-slate-600 mt-0.5">
-            Real road distances calculated via Google Routes API. Geocoding by Google Geocoding API.
+            Geospatial coordinates & facility records powered by OpenStreetMap & Healthcare Registries.
           </p>
         </div>
 
-        {data?.google_maps_search_url && (
-          <a
-            href={data.google_maps_search_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-medic-teal hover:underline flex items-center gap-1 font-bold shrink-0"
-          >
-            <span>View All on Google Maps</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
-        )}
+        <div className="flex items-center gap-3 shrink-0">
+          {data?.osm_search_url && (
+            <a
+              href={data.osm_search_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-400 hover:underline flex items-center gap-1 font-bold text-xs"
+            >
+              <span>Explore on OpenStreetMap</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          )}
+          {data?.google_maps_search_url && (
+            <a
+              href={data.google_maps_search_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-medic-teal hover:underline flex items-center gap-1 font-bold text-xs"
+            >
+              <span>Google Maps</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          )}
+        </div>
       </div>
 
     </div>

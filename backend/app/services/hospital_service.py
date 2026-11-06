@@ -38,15 +38,67 @@ class HospitalDiscoveryService:
     def reverse_geocode(latitude: float, longitude: float) -> ReverseGeocodeResponse:
         """
         Resolves latitude/longitude into human-readable locality and address.
-        Uses Google Geocoding API if key configured, or Nominatim OpenStreetMap service.
+        Supports:
+        1. OpenStreetMap LocationIQ / Geoapify API when key is configured.
+        2. Google Geocoding API if key configured.
+        3. Authoritative Live OpenStreetMap Nominatim service.
         """
-        # 1. Try Google Geocoding API
+        # 1. OpenStreetMap LocationIQ Service (if key configured)
+        osm_key = settings.active_osm_api_key
+        if settings.LOCATIONIQ_API_KEY or (osm_key and osm_key.startswith("pk.")):
+            liq_key = settings.LOCATIONIQ_API_KEY or osm_key
+            try:
+                url = f"https://us1.locationiq.com/v1/reverse?key={liq_key}&lat={latitude}&lon={longitude}&format=json"
+                with httpx.Client(timeout=4.0) as client:
+                    resp = client.get(url)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        addr = data.get("address", {})
+                        locality = addr.get("suburb") or addr.get("city") or addr.get("neighbourhood") or "Local Area"
+                        return ReverseGeocodeResponse(
+                            formatted_address=data.get("display_name", f"{latitude}, {longitude}"),
+                            locality=locality,
+                            sublocality=addr.get("suburb"),
+                            city=addr.get("city") or addr.get("town"),
+                            state=addr.get("state"),
+                            country=addr.get("country"),
+                            postal_code=addr.get("postcode"),
+                            data_provider="LocationIQ OpenStreetMap Service"
+                        )
+            except Exception as e:
+                logger.warning(f"LocationIQ reverse geocode error: {e}")
+
+        # 2. OpenStreetMap Geoapify Service (if key configured)
+        if settings.GEOAPIFY_API_KEY:
+            try:
+                url = f"https://api.geoapify.com/v1/geocode/reverse?lat={latitude}&lon={longitude}&apiKey={settings.GEOAPIFY_API_KEY}"
+                with httpx.Client(timeout=4.0) as client:
+                    resp = client.get(url)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        feats = data.get("features", [])
+                        if feats:
+                            props = feats[0].get("properties", {})
+                            return ReverseGeocodeResponse(
+                                formatted_address=props.get("formatted", f"{latitude}, {longitude}"),
+                                locality=props.get("suburb") or props.get("city") or "Local Area",
+                                sublocality=props.get("suburb"),
+                                city=props.get("city"),
+                                state=props.get("state"),
+                                country=props.get("country"),
+                                postal_code=props.get("postcode"),
+                                data_provider="Geoapify OpenStreetMap Service"
+                            )
+            except Exception as e:
+                logger.warning(f"Geoapify reverse geocode error: {e}")
+
+        # 3. Google Geocoding API (if configured)
         if google_maps_service.is_configured:
             res = google_maps_service.reverse_geocode(latitude, longitude)
             if res:
                 return res
 
-        # 2. Live Nominatim Reverse Geocoding
+        # 4. Live Authoritative OpenStreetMap Nominatim Reverse Geocoding
         try:
             url = f"{settings.NOMINATIM_BASE_URL}/reverse"
             params = {
@@ -169,6 +221,7 @@ class HospitalDiscoveryService:
                         has_emergency_room=p.get("has_emergency_room", True),
                         directions_url=p["directions_url"],
                         place_url=p["directions_url"],
+                        osm_directions_url=f"https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route={latitude}%2C{longitude}%3B{p['latitude']}%2C{p['longitude']}",
                         data_provider="Google Places API",
                         last_updated=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
                     ))
@@ -245,6 +298,7 @@ class HospitalDiscoveryService:
                                 has_emergency_room=(tags.get("emergency") == "yes" or f_type == "hospital"),
                                 directions_url=directions_url,
                                 place_url=directions_url,
+                                osm_directions_url=f"https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route={latitude}%2C{longitude}%3B{el_lat}%2C{el_lng}",
                                 data_provider="OpenStreetMap Overpass Network",
                                 last_updated=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
                             ))
@@ -275,8 +329,9 @@ class HospitalDiscoveryService:
         else:
             filtered.sort(key=lambda x: x.distance_km)
 
-        # External Google Maps Direct Search link
+        # External Search Links
         maps_search_url = f"https://www.google.com/maps/search/hospitals/@{latitude},{longitude},{max(11, int(15 - radius_km/5))}z"
+        osm_search_url = f"https://www.openstreetmap.org/#map={max(12, int(16 - radius_km/4))}/{latitude}/{longitude}"
 
         # Reverse geocode the search center for display
         geo_info = cls.reverse_geocode(latitude, longitude)
@@ -293,6 +348,8 @@ class HospitalDiscoveryService:
             is_live_provider=is_live_provider,
             provider_attribution="Live data via " + data_provider,
             google_maps_search_url=maps_search_url,
+            osm_search_url=osm_search_url,
+            osm_api_key_configured=bool(settings.active_osm_api_key),
             emergency_helpline="112 (India National Emergency Helpline)"
         )
 
@@ -318,6 +375,7 @@ class HospitalDiscoveryService:
         """
         s_dist = haversine_distance(origin_lat, origin_lng, dest_lat, dest_lng)
         nav_url = f"https://www.google.com/maps/dir/?api=1&origin={origin_lat},{origin_lng}&destination={dest_lat},{dest_lng}&travelmode=driving"
+        osm_nav_url = f"https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route={origin_lat}%2C{origin_lng}%3B{dest_lat}%2C{dest_lng}"
 
         if google_maps_service.is_configured:
             matrix = google_maps_service.compute_road_distance_matrix(origin_lat, origin_lng, [(dest_lat, dest_lng)])
@@ -332,6 +390,7 @@ class HospitalDiscoveryService:
                     driving_duration_mins=r["driving_duration_mins"],
                     driving_duration_text=r["driving_duration_text"],
                     navigation_url=nav_url,
+                    osm_navigation_url=osm_nav_url,
                     route_summary=f"Fastest route via arterial roads ({r['road_distance_km']} km)",
                     steps=[
                         f"Depart current location heading toward destination.",
@@ -352,6 +411,7 @@ class HospitalDiscoveryService:
             driving_duration_mins=drive_mins,
             driving_duration_text=f"~{round(drive_mins)} mins",
             navigation_url=nav_url,
+            osm_navigation_url=osm_nav_url,
             route_summary=f"Direct trajectory ({s_dist} km straight-line)",
             steps=[
                 f"Depart current location toward destination.",

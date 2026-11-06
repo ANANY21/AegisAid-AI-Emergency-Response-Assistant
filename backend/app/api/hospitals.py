@@ -99,3 +99,20 @@ def get_chennai_demonstration_presets():
     Returns official demonstration localities across Chennai with coordinates.
     """
     return hospital_service.get_chennai_presets()
+
+@router.get("/api/v1/location/config")
+@router.get("/api/location/config")
+def get_location_service_config():
+    """
+    Returns the current mapping engine configuration, indicating whether
+    OpenStreetMap API key or Google Maps Platform is active.
+    """
+    from ..config import settings
+    return {
+        "osm_api_key_configured": bool(settings.active_osm_api_key),
+        "google_maps_configured": bool(settings.GOOGLE_MAPS_API_KEY),
+        "primary_map_engine": "OpenStreetMap" if (settings.active_osm_api_key or not settings.GOOGLE_MAPS_API_KEY) else "Google Maps Platform",
+        "default_attribution": "Map data © OpenStreetMap contributors",
+        "overpass_api_url": settings.OVERPASS_API_URL,
+        "nominatim_base_url": settings.NOMINATIM_BASE_URL
+    }

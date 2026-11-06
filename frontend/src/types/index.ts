@@ -197,6 +197,7 @@ export interface MedicalFacility {
   opening_hours_text?: string | null;
   has_emergency_room: boolean;
   directions_url: string;
+  osm_directions_url?: string | null;
   place_url?: string | null;
   real_time_status_note: string;
   data_provider: string;
@@ -214,6 +215,8 @@ export interface HospitalSearchResponse {
   is_live_provider: boolean;
   provider_attribution: string;
   google_maps_search_url: string;
+  osm_search_url?: string | null;
+  osm_api_key_configured?: boolean;
   emergency_helpline: string;
   disclaimer: string;
 }

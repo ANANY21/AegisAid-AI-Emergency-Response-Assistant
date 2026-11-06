@@ -25,6 +25,7 @@ class MedicalFacility(BaseModel):
     has_emergency_room: bool = True
     directions_url: Optional[str] = None
     place_url: Optional[str] = None
+    osm_directions_url: Optional[str] = None
     real_time_status_note: str = (
         "Hospital location information does not guarantee emergency department availability "
         "or treatment capacity. Call the hospital or emergency services (112) to confirm."
@@ -45,6 +46,8 @@ class HospitalSearchResponse(BaseModel):
     is_live_provider: bool = True
     provider_attribution: str = "Powered by Google Maps Platform & Official Healthcare Registry"
     google_maps_search_url: str
+    osm_search_url: Optional[str] = None
+    osm_api_key_configured: bool = False
     emergency_helpline: str = "112 (India National Emergency Helpline)"
     disclaimer: str = (
         "CRITICAL DISCLAIMER: Hospital location information does not guarantee emergency department availability "
@@ -89,6 +92,7 @@ class RouteDirectionsResponse(BaseModel):
     driving_duration_mins: float
     driving_duration_text: str
     navigation_url: str
+    osm_navigation_url: Optional[str] = None
     route_summary: Optional[str] = None
     steps: List[str] = Field(default_factory=list)
     data_provider: str = "Google Routes API"

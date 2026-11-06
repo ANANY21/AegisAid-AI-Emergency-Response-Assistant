@@ -50,9 +50,34 @@ class Settings(BaseSettings):
     GOOGLE_MAPS_API_KEY: str = ""
     GOOGLE_MAPS_BASE_URL: str = "https://maps.googleapis.com/maps/api"
     GOOGLE_ROUTES_BASE_URL: str = "https://routes.googleapis.com"
+    
+    # OpenStreetMap Configuration & API Keys
+    OPENSTREETMAP_API_KEY: str = ""
+    OSM_API_KEY: str = ""
+    LOCATIONIQ_API_KEY: str = ""
+    GEOAPIFY_API_KEY: str = ""
+    OPENROUTESERVICE_API_KEY: str = ""
+    THUNDERFOREST_API_KEY: str = ""
+    STADIA_MAPS_API_KEY: str = ""
+    
     NOMINATIM_BASE_URL: str = "https://nominatim.openstreetmap.org"
     OVERPASS_API_URL: str = "https://overpass-api.de/api/interpreter"
+    OSM_ROUTING_URL: str = "https://router.project-osrm.org"
     DEFAULT_SEARCH_RADIUS_METERS: int = 5000
+
+    @property
+    def active_osm_api_key(self) -> str:
+        """Returns the first non-empty OpenStreetMap / OSM ecosystem API key."""
+        return (
+            self.OPENSTREETMAP_API_KEY or
+            self.OSM_API_KEY or
+            self.LOCATIONIQ_API_KEY or
+            self.GEOAPIFY_API_KEY or
+            self.OPENROUTESERVICE_API_KEY or
+            self.THUNDERFOREST_API_KEY or
+            self.STADIA_MAPS_API_KEY or
+            ""
+        ).strip()
 
     class Config:
         env_file = str(BASE_DIR / ".env")

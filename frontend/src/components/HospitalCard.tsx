@@ -163,6 +163,20 @@ export const HospitalCard: React.FC<HospitalCardProps> = ({
               </a>
             </div>
           )}
+
+          {facility.osm_directions_url && (
+            <div className="pt-0.5">
+              <a
+                href={facility.osm_directions_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-400 hover:underline flex items-center gap-1 font-bold text-[11px]"
+              >
+                <ExternalLink className="w-3 h-3" />
+                <span>View Route on OpenStreetMap.org</span>
+              </a>
+            </div>
+          )}
         </div>
       )}
 
@@ -200,7 +214,21 @@ export const HospitalCard: React.FC<HospitalCardProps> = ({
           </button>
         )}
 
-        {/* Directions via Google Maps navigation */}
+        {/* Directions via OpenStreetMap & Google Maps */}
+        {facility.osm_directions_url && (
+          <a
+            href={facility.osm_directions_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="py-2 px-3 rounded-xl bg-emerald-950/70 hover:bg-emerald-900/80 text-emerald-300 font-bold text-xs flex items-center justify-center gap-1.5 border border-emerald-600/40 transition-colors"
+            title="Open turn-by-turn route in OpenStreetMap"
+          >
+            <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+            <span>OSM Route</span>
+          </a>
+        )}
+
+        {/* Directions button */}
         <a
           href={facility.directions_url}
           target="_blank"
@@ -208,7 +236,7 @@ export const HospitalCard: React.FC<HospitalCardProps> = ({
           className="flex-1 min-w-[120px] py-2 px-3 rounded-xl bg-medic-teal hover:bg-medic-teal-light text-navy-950 font-black text-xs flex items-center justify-center gap-1.5 shadow-md transition-all"
         >
           <Navigation className="w-3.5 h-3.5" />
-          <span>Get Directions</span>
+          <span>Directions</span>
         </a>
 
         {/* Details Toggle */}

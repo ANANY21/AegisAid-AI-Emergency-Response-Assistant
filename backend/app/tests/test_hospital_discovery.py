@@ -32,6 +32,7 @@ from backend.app.api.hospitals import (
     get_hospital_directions,
     reverse_geocode_location,
     get_chennai_demonstration_presets,
+    get_location_service_config,
 )
 
 
@@ -164,8 +165,10 @@ def test_find_nearby_facilities_parsing():
         assert hosp.phone == "+91 44 2226 1234"
         assert hosp.straight_line_distance_km is not None
         assert hosp.straight_line_distance_km < 1.0
+        assert "openstreetmap.org/directions" in hosp.osm_directions_url
 
-        # Safety disclaimer and helpline must be present
+        # OpenStreetMap search URL & safety disclaimer
+        assert "openstreetmap.org/#map" in result.osm_search_url
         assert "112" in result.emergency_helpline
         assert "Hospital location information does not guarantee" in result.disclaimer
 
@@ -325,3 +328,9 @@ def test_fastapi_endpoints():
         assert nearby_resp.count == 1
         assert nearby_resp.facilities[0].name == "Deepam Hospital Tambaram"
         assert nearby_resp.search_locality == "Tambaram"
+
+    # 4. Location Config Endpoint
+    config_resp = get_location_service_config()
+    assert "primary_map_engine" in config_resp
+    assert "default_attribution" in config_resp
+    assert "OpenStreetMap" in config_resp["default_attribution"]
