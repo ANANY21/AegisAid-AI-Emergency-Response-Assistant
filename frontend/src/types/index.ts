@@ -177,25 +177,92 @@ export interface EmergencyResponse {
 
 export interface MedicalFacility {
   id: string;
+  place_id?: string | null;
   name: string;
   facility_type: string;
   address: string;
-  distance_km: number;
-  phone?: string | null;
-  has_emergency_room: boolean;
+  locality?: string | null;
   latitude: number;
   longitude: number;
+  road_distance_km?: number | null;
+  straight_line_distance_km: number;
+  distance_km: number;
+  driving_duration_mins?: number | null;
+  driving_duration_text?: string | null;
+  phone?: string | null;
+  website?: string | null;
+  rating?: number | null;
+  user_ratings_total?: number | null;
+  is_open_now?: boolean | null;
+  opening_hours_text?: string | null;
+  has_emergency_room: boolean;
   directions_url: string;
+  place_url?: string | null;
   real_time_status_note: string;
+  data_provider: string;
+  last_updated: string;
 }
 
 export interface HospitalSearchResponse {
   facilities: MedicalFacility[];
   search_center_lat: number;
   search_center_lng: number;
+  search_locality?: string | null;
+  search_radius_km: number;
   count: number;
-  data_source: string;
+  data_provider: string;
+  is_live_provider: boolean;
+  provider_attribution: string;
+  google_maps_search_url: string;
+  emergency_helpline: string;
   disclaimer: string;
+}
+
+export interface ReverseGeocodeResponse {
+  formatted_address: string;
+  locality: string;
+  sublocality?: string | null;
+  city?: string | null;
+  state?: string | null;
+  country?: string | null;
+  postal_code?: string | null;
+  data_provider: string;
+}
+
+export interface PlaceDetailsResponse {
+  place_id: string;
+  name: string;
+  formatted_address: string;
+  formatted_phone_number?: string | null;
+  international_phone_number?: string | null;
+  website?: string | null;
+  rating?: number | null;
+  user_ratings_total?: number | null;
+  opening_hours?: string[] | null;
+  is_open_now?: boolean | null;
+  google_maps_url?: string | null;
+  types: string[];
+}
+
+export interface RouteDirectionsResponse {
+  origin_lat: number;
+  origin_lng: number;
+  destination_lat: number;
+  destination_lng: number;
+  road_distance_km: number;
+  driving_duration_mins: number;
+  driving_duration_text: string;
+  navigation_url: string;
+  route_summary?: string | null;
+  steps: string[];
+  data_provider: string;
+}
+
+export interface ChennaiPreset {
+  name: string;
+  locality: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface HistorySession {

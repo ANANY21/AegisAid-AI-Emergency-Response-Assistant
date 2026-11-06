@@ -46,9 +46,13 @@ class Settings(BaseSettings):
     CLASSIFIER_CONFIDENCE_THRESHOLD: float = 0.60
     CRITICAL_BYPASS_ENABLED: bool = True
     
-    # Facility Search (OpenStreetMap Overpass API)
+    # Facility Search (Google Maps Platform & OpenStreetMap)
+    GOOGLE_MAPS_API_KEY: str = ""
+    GOOGLE_MAPS_BASE_URL: str = "https://maps.googleapis.com/maps/api"
+    GOOGLE_ROUTES_BASE_URL: str = "https://routes.googleapis.com"
+    NOMINATIM_BASE_URL: str = "https://nominatim.openstreetmap.org"
     OVERPASS_API_URL: str = "https://overpass-api.de/api/interpreter"
-    DEFAULT_SEARCH_RADIUS_METERS: int = 8000
+    DEFAULT_SEARCH_RADIUS_METERS: int = 5000
 
     class Config:
         env_file = str(BASE_DIR / ".env")

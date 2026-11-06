@@ -1,6 +1,7 @@
 import {
   EmergencyResponse, HospitalSearchResponse, HistorySession, BenchmarkReport,
-  SHAPExplanationResponse, GlobalSHAPResponse, MedicalSourceProvenance, SourceRegistryMetrics
+  SHAPExplanationResponse, GlobalSHAPResponse, MedicalSourceProvenance, SourceRegistryMetrics,
+  PlaceDetailsResponse, RouteDirectionsResponse, ReverseGeocodeResponse, ChennaiPreset
 } from '../types';
 
 const API_BASE = '/api';
@@ -28,14 +29,80 @@ export async function analyzeEmergency(payload: {
   return resp.json();
 }
 
-export async function getNearbyHospitals(lat?: number, lng?: number): Promise<HospitalSearchResponse> {
+export async function getNearbyHospitals(options?: {
+  lat?: number;
+  lng?: number;
+  radius_km?: number;
+  sort_by?: string;
+  filter_type?: string;
+}): Promise<HospitalSearchResponse> {
   const params = new URLSearchParams();
-  if (lat !== undefined && lng !== undefined) {
-    params.append('lat', lat.toString());
-    params.append('lng', lng.toString());
+  if (options?.lat !== undefined && options?.lng !== undefined) {
+    params.append('lat', options.lat.toString());
+    params.append('lng', options.lng.toString());
+  }
+  if (options?.radius_km !== undefined) {
+    params.append('radius_km', options.radius_km.toString());
+  }
+  if (options?.sort_by) {
+    params.append('sort_by', options.sort_by);
+  }
+  if (options?.filter_type) {
+    params.append('filter_type', options.filter_type);
   }
   const resp = await fetch(`${API_BASE}/hospitals/nearby?${params.toString()}`);
-  if (!resp.ok) throw new Error('Failed to load nearby medical facilities');
+  if (!resp.ok) {
+    const errorData = await resp.json().catch(() => ({}));
+    throw new Error(errorData.detail || 'Failed to load nearby medical facilities');
+  }
+  return resp.json();
+}
+
+export async function getHospitalDetails(placeId: string): Promise<PlaceDetailsResponse> {
+  const resp = await fetch(`${API_BASE}/hospitals/${encodeURIComponent(placeId)}`);
+  if (!resp.ok) {
+    throw new Error('Failed to load facility details');
+  }
+  return resp.json();
+}
+
+export async function getHospitalDirections(
+  placeId: string,
+  originLat: number,
+  originLng: number,
+  destLat: number,
+  destLng: number
+): Promise<RouteDirectionsResponse> {
+  const params = new URLSearchParams({
+    origin_lat: originLat.toString(),
+    origin_lng: originLng.toString(),
+    dest_lat: destLat.toString(),
+    dest_lng: destLng.toString()
+  });
+  const resp = await fetch(`${API_BASE}/hospitals/${encodeURIComponent(placeId)}/directions?${params.toString()}`);
+  if (!resp.ok) {
+    throw new Error('Failed to calculate road route directions');
+  }
+  return resp.json();
+}
+
+export async function reverseGeocodeLocation(lat: number, lng: number): Promise<ReverseGeocodeResponse> {
+  const resp = await fetch(`${API_BASE}/location/reverse-geocode`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ lat, lng })
+  });
+  if (!resp.ok) {
+    throw new Error('Failed to reverse geocode location');
+  }
+  return resp.json();
+}
+
+export async function getChennaiPresets(): Promise<ChennaiPreset[]> {
+  const resp = await fetch(`${API_BASE}/location/chennai-presets`);
+  if (!resp.ok) {
+    throw new Error('Failed to load Chennai presets');
+  }
   return resp.json();
 }
 
