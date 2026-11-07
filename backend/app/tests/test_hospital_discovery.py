@@ -12,13 +12,13 @@ Validates:
 
 import pytest
 from unittest.mock import patch, MagicMock
-from backend.app.services.google_maps_service import haversine_distance, google_maps_service
-from backend.app.services.hospital_service import (
+from app.services.google_maps_service import haversine_distance, google_maps_service
+from app.services.hospital_service import (
     hospital_service,
     HospitalDiscoveryService,
     CHENNAI_PRESETS
 )
-from backend.app.schemas.hospitals import (
+from app.schemas.hospitals import (
     MedicalFacility,
     HospitalSearchResponse,
     ReverseGeocodeRequest,
@@ -26,7 +26,7 @@ from backend.app.schemas.hospitals import (
     PlaceDetailsResponse,
     RouteDirectionsResponse,
 )
-from backend.app.api.hospitals import (
+from app.api.hospitals import (
     get_nearby_hospitals,
     get_hospital_details,
     get_hospital_directions,
@@ -42,7 +42,7 @@ from backend.app.api.hospitals import (
 
 def test_no_default_facilities_or_mock_offsets():
     """Verify that DEFAULT_FACILITIES and fake offsets are completely eliminated."""
-    import backend.app.services.hospital_service as hs
+    import app.services.hospital_service as hs
     assert not hasattr(hs, "DEFAULT_FACILITIES"), "DEFAULT_FACILITIES dummy list must be removed!"
     
     import inspect
@@ -344,7 +344,7 @@ def test_fastapi_endpoints():
 
 def test_hospital_discovery_diagnostics_structure():
     """Verify diagnostics object structure and auto-expansion metadata."""
-    from backend.app.schemas.hospitals import HospitalDiscoveryDiagnostics
+    from app.schemas.hospitals import HospitalDiscoveryDiagnostics
     diag = HospitalDiscoveryDiagnostics(
         timestamp="2026-11-07 16:30:00 UTC",
         active_provider="OpenStreetMap Nominatim Bounded Healthcare Search",
@@ -371,7 +371,7 @@ def test_hospital_discovery_diagnostics_structure():
 
 def test_diagnostics_endpoint():
     """Verify /api/v1/hospitals/diagnostics endpoint returns operational status."""
-    from backend.app.api.hospitals import get_hospital_discovery_diagnostics
+    from app.api.hospitals import get_hospital_discovery_diagnostics
     diag_resp = get_hospital_discovery_diagnostics()
     assert diag_resp["status"] == "healthy"
     assert "google_maps" in diag_resp
@@ -383,7 +383,7 @@ def test_diagnostics_endpoint():
 
 def test_google_places_new_search_payload_format():
     """Verify that Google Maps Platform service strictly prepares Places API (New) payload."""
-    from backend.app.services.google_maps_service import GoogleMapsPlatformService
+    from app.services.google_maps_service import GoogleMapsPlatformService
     service = GoogleMapsPlatformService()
     
     # Even if key is None, the URL and Table A type specification must match Places API (New)
