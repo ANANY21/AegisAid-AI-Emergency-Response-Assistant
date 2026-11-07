@@ -24,7 +24,12 @@ export async function analyzeEmergency(payload: {
   });
   if (!resp.ok) {
     const errorData = await resp.json().catch(() => ({}));
-    throw new Error(errorData.message || `Server error: ${resp.status}`);
+    const message = typeof errorData.detail === 'string' 
+      ? errorData.detail 
+      : (Array.isArray(errorData.detail) 
+          ? errorData.detail.map((e: any) => e.msg || JSON.stringify(e)).join(', ') 
+          : (errorData.message || `Server error: ${resp.status}`));
+    throw new Error(message);
   }
   return resp.json();
 }
