@@ -54,7 +54,8 @@ async def generic_exception_handler(request: Request, exc: Exception):
         content={"error": True, "message": "An internal safety or processing error occurred."}
     )
 
-# Health endpoint (must be registered before any static catch-all)
+# Health endpoints (must be registered before any static catch-all)
+@app.get("/health", tags=["Health"])
 @app.get("/api/health", tags=["Health"])
 def health_check():
     return {

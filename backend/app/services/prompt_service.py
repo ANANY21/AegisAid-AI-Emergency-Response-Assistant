@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional, Union, Tuple
 from ..schemas.emergency import ExtractedEmergencyInfo
 from ..schemas.retrieval import RetrievedChunk
 from ..schemas.classification import ClassificationResult
