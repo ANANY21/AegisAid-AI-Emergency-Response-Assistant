@@ -207,6 +207,25 @@ export interface MedicalFacility {
   last_updated: string;
 }
 
+export interface HospitalDiscoveryDiagnostics {
+  timestamp: string;
+  active_provider: string;
+  google_places_configured: boolean;
+  google_places_masked_key?: string | null;
+  google_places_http_status?: number | null;
+  google_places_error?: string | null;
+  osm_fallback_used: boolean;
+  osm_http_status?: number | null;
+  search_radius_km: number;
+  initial_radius_km: number;
+  radius_expanded: boolean;
+  raw_result_count: number;
+  filtered_result_count: number;
+  duration_ms: number;
+  status_code: 'OK' | 'ZERO_RESULTS' | 'CONFIG_REQUIRED' | 'ERROR';
+  actionable_guidance?: string | null;
+}
+
 export interface HospitalSearchResponse {
   facilities: MedicalFacility[];
   search_center_lat: number;
@@ -221,6 +240,7 @@ export interface HospitalSearchResponse {
   osm_search_url?: string | null;
   osm_api_key_configured?: boolean;
   emergency_helpline: string;
+  diagnostics?: HospitalDiscoveryDiagnostics | null;
   disclaimer: string;
 }
 

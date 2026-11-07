@@ -136,7 +136,8 @@ def test_find_nearby_facilities_parsing():
         ]
     }
 
-    with patch("httpx.Client.post") as mock_post:
+    with patch("httpx.Client.post") as mock_post, patch("httpx.Client.get") as mock_get:
+        mock_get.side_effect = Exception("Nominatim bypassed for Overpass test")
         mock_resp = MagicMock()
         mock_resp.status_code = 200
         mock_resp.json.return_value = mock_overpass_response
@@ -202,7 +203,8 @@ def test_find_nearby_facilities_emergency_filter():
         ]
     }
 
-    with patch("httpx.Client.post") as mock_post:
+    with patch("httpx.Client.post") as mock_post, patch("httpx.Client.get") as mock_get:
+        mock_get.side_effect = Exception("Nominatim bypassed for Overpass test")
         mock_resp = MagicMock()
         mock_resp.status_code = 200
         mock_resp.json.return_value = mock_overpass_response
@@ -334,3 +336,57 @@ def test_fastapi_endpoints():
     assert "primary_map_engine" in config_resp
     assert "default_attribution" in config_resp
     assert "OpenStreetMap" in config_resp["default_attribution"]
+
+
+# ============================================================================
+# 8. Diagnostics Telemetry & Google Places API (New) Validation
+# ============================================================================
+
+def test_hospital_discovery_diagnostics_structure():
+    """Verify diagnostics object structure and auto-expansion metadata."""
+    from backend.app.schemas.hospitals import HospitalDiscoveryDiagnostics
+    diag = HospitalDiscoveryDiagnostics(
+        timestamp="2026-11-07 16:30:00 UTC",
+        active_provider="OpenStreetMap Nominatim Bounded Healthcare Search",
+        google_places_configured=False,
+        google_places_masked_key=None,
+        google_places_http_status=None,
+        google_places_error="GOOGLE_MAPS_API_KEY is not configured",
+        osm_fallback_used=True,
+        osm_http_status=200,
+        search_radius_km=10.0,
+        initial_radius_km=5.0,
+        radius_expanded=True,
+        raw_result_count=15,
+        filtered_result_count=15,
+        duration_ms=480.5,
+        status_code="OK",
+        actionable_guidance="OpenStreetMap Nominatim search active."
+    )
+    assert diag.status_code == "OK"
+    assert diag.radius_expanded is True
+    assert diag.search_radius_km == 10.0
+    assert diag.raw_result_count == 15
+
+
+def test_diagnostics_endpoint():
+    """Verify /api/v1/hospitals/diagnostics endpoint returns operational status."""
+    from backend.app.api.hospitals import get_hospital_discovery_diagnostics
+    diag_resp = get_hospital_discovery_diagnostics()
+    assert diag_resp["status"] == "healthy"
+    assert "google_maps" in diag_resp
+    assert "openstreetmap" in diag_resp
+    assert "regional_registry" in diag_resp
+    assert diag_resp["google_maps"]["endpoint"] == "https://places.googleapis.com/v1/places:searchNearby"
+    assert diag_resp["google_maps"]["type_filter"] == "hospital"
+
+
+def test_google_places_new_search_payload_format():
+    """Verify that Google Maps Platform service strictly prepares Places API (New) payload."""
+    from backend.app.services.google_maps_service import GoogleMapsPlatformService
+    service = GoogleMapsPlatformService()
+    
+    # Even if key is None, the URL and Table A type specification must match Places API (New)
+    assert service.PLACES_NEARBY_URL == "https://places.googleapis.com/v1/places:searchNearby"
+    assert service.get_masked_key() is None or service.get_masked_key().startswith("AIzaSy")
+

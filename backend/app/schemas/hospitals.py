@@ -35,6 +35,24 @@ class MedicalFacility(BaseModel):
         default_factory=lambda: datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     )
 
+class HospitalDiscoveryDiagnostics(BaseModel):
+    timestamp: str
+    active_provider: str
+    google_places_configured: bool
+    google_places_masked_key: Optional[str] = None
+    google_places_http_status: Optional[int] = None
+    google_places_error: Optional[str] = None
+    osm_fallback_used: bool = False
+    osm_http_status: Optional[int] = None
+    search_radius_km: float
+    initial_radius_km: float
+    radius_expanded: bool = False
+    raw_result_count: int
+    filtered_result_count: int
+    duration_ms: float
+    status_code: str = "OK"  # "OK", "ZERO_RESULTS", "CONFIG_REQUIRED", "ERROR"
+    actionable_guidance: Optional[str] = None
+
 class HospitalSearchResponse(BaseModel):
     facilities: List[MedicalFacility]
     search_center_lat: float
@@ -49,6 +67,7 @@ class HospitalSearchResponse(BaseModel):
     osm_search_url: Optional[str] = None
     osm_api_key_configured: bool = False
     emergency_helpline: str = "112 (India National Emergency Helpline)"
+    diagnostics: Optional[HospitalDiscoveryDiagnostics] = None
     disclaimer: str = (
         "CRITICAL DISCLAIMER: Hospital location information does not guarantee emergency department availability "
         "or treatment capacity. Call the hospital or emergency services (112) to confirm. In life-threatening "

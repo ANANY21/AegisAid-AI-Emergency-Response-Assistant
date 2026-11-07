@@ -35,6 +35,8 @@ export async function getNearbyHospitals(options?: {
   radius_km?: number;
   sort_by?: string;
   filter_type?: string;
+  limit?: number;
+  auto_expand?: boolean;
 }): Promise<HospitalSearchResponse> {
   const params = new URLSearchParams();
   if (options?.lat !== undefined && options?.lng !== undefined) {
@@ -50,10 +52,24 @@ export async function getNearbyHospitals(options?: {
   if (options?.filter_type) {
     params.append('filter_type', options.filter_type);
   }
+  if (options?.limit !== undefined) {
+    params.append('limit', options.limit.toString());
+  }
+  if (options?.auto_expand !== undefined) {
+    params.append('auto_expand', options.auto_expand ? 'true' : 'false');
+  }
   const resp = await fetch(`${API_BASE}/hospitals/nearby?${params.toString()}`);
   if (!resp.ok) {
     const errorData = await resp.json().catch(() => ({}));
     throw new Error(errorData.detail || 'Failed to load nearby medical facilities');
+  }
+  return resp.json();
+}
+
+export async function getHospitalDiagnostics(): Promise<any> {
+  const resp = await fetch(`${API_BASE}/hospitals/diagnostics`);
+  if (!resp.ok) {
+    throw new Error('Failed to fetch hospital diagnostics');
   }
   return resp.json();
 }

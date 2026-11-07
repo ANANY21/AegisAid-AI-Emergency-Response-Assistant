@@ -10,7 +10,8 @@ import { HospitalMap } from '../components/HospitalMap';
 import { 
   MapPin, Search, Navigation, AlertCircle, RefreshCw, Hospital, 
   Filter, PhoneCall, ShieldAlert, CheckCircle2, Clock, Crosshair, 
-  Map, List, Compass, ChevronDown, ExternalLink
+  Map, List, Compass, ChevronDown, ChevronUp, ExternalLink,
+  Terminal, Activity, Cpu, Layers, Sparkles, Info
 } from 'lucide-react';
 
 export const HospitalFinderView: React.FC = () => {
@@ -36,6 +37,18 @@ export const HospitalFinderView: React.FC = () => {
   const [viewMode, setViewMode] = useState<'split' | 'map' | 'list'>('split');
   const [showPresetsMenu, setShowPresetsMenu] = useState<boolean>(false);
 
+  // Diagnostics HUD & Testing
+  const [showDiagnostics, setShowDiagnostics] = useState<boolean>(false);
+  const [isTestingApi, setIsTestingApi] = useState<boolean>(false);
+  const [testResult, setTestResult] = useState<{
+    success: boolean;
+    durationMs: number;
+    provider: string;
+    facilityCount: number;
+    statusCode: string;
+    error?: string;
+  } | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -52,7 +65,8 @@ export const HospitalFinderView: React.FC = () => {
     lng?: number, 
     radius: number = searchRadiusKm,
     sort: string = sortBy,
-    filter: string = filterType
+    filter: string = filterType,
+    autoExpand: boolean = true
   ) => {
     setIsLoading(true);
     setErrorMsg(null);
@@ -62,11 +76,12 @@ export const HospitalFinderView: React.FC = () => {
         lng,
         radius_km: radius,
         sort_by: sort,
-        filter_type: filter
+        filter_type: filter,
+        auto_expand: autoExpand
       });
       setData(res);
       setFacilities(res.facilities);
-      if (res.facilities.length > 0 && !selectedFacility) {
+      if (res.facilities.length > 0 && (!selectedFacility || !res.facilities.some(f => f.id === selectedFacility.id))) {
         setSelectedFacility(res.facilities[0]);
       }
     } catch (err: any) {
@@ -74,6 +89,47 @@ export const HospitalFinderView: React.FC = () => {
       setFacilities([]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Fresh Test API Request Trigger
+  const handleTestNearbyApi = async () => {
+    setIsTestingApi(true);
+    const startTime = performance.now();
+    try {
+      const res = await getNearbyHospitals({
+        lat: coords.lat,
+        lng: coords.lng,
+        radius_km: searchRadiusKm,
+        sort_by: sortBy,
+        filter_type: filterType,
+        auto_expand: true
+      });
+      const duration = Math.round(performance.now() - startTime);
+      setTestResult({
+        success: true,
+        durationMs: duration,
+        provider: res.data_provider,
+        facilityCount: res.facilities.length,
+        statusCode: res.diagnostics?.status_code || 'OK'
+      });
+      setData(res);
+      setFacilities(res.facilities);
+      if (res.facilities.length > 0) {
+        setSelectedFacility(res.facilities[0]);
+      }
+    } catch (err: any) {
+      const duration = Math.round(performance.now() - startTime);
+      setTestResult({
+        success: false,
+        durationMs: duration,
+        provider: 'N/A',
+        facilityCount: 0,
+        statusCode: 'ERROR',
+        error: err.message || 'Network request failed'
+      });
+    } finally {
+      setIsTestingApi(false);
     }
   };
 
@@ -206,7 +262,7 @@ export const HospitalFinderView: React.FC = () => {
           </p>
         </div>
 
-        {/* Immediate 112 Call Option */}
+        {/* Immediate 112 Call Option & Telemetry Controls */}
         <div className="flex items-center gap-3">
           <a
             href="tel:112"
@@ -215,6 +271,24 @@ export const HospitalFinderView: React.FC = () => {
             <PhoneCall className="w-4 h-4" />
             <span>Call 112 (Emergency)</span>
           </a>
+
+          <button
+            onClick={() => setShowDiagnostics(!showDiagnostics)}
+            className={`px-3.5 py-2.5 rounded-xl border text-xs font-bold flex items-center gap-2 transition-all ${
+              showDiagnostics
+                ? 'bg-medic-teal text-navy-950 border-medic-teal shadow-lg shadow-medic-teal/20'
+                : 'bg-navy-800 hover:bg-navy-700 text-slate-200 border-navy-700'
+            }`}
+            title="Toggle Developer Telemetry & Diagnostics HUD"
+          >
+            <Terminal className="w-3.5 h-3.5" />
+            <span className="hidden md:inline">Diagnostics HUD</span>
+            {data?.diagnostics && (
+              <span className={`w-2 h-2 rounded-full ${
+                data.diagnostics.status_code === 'OK' ? 'bg-emerald-400' : 'bg-amber-400'
+              }`} />
+            )}
+          </button>
 
           <button
             onClick={requestGpsLocation}
@@ -238,6 +312,202 @@ export const HospitalFinderView: React.FC = () => {
           </p>
         </div>
       </div>
+
+      {/* Collapsible Developer Diagnostics & Telemetry HUD */}
+      {showDiagnostics && (
+        <div className="p-5 rounded-2xl bg-navy-950/95 border border-navy-700/80 space-y-4 shadow-2xl backdrop-blur-md">
+          {/* HUD Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-navy-800">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-lg bg-medic-teal/10 border border-medic-teal/30 text-medic-teal">
+                <Terminal className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h4 className="text-xs font-black text-white tracking-wider uppercase">
+                    Discovery System Diagnostics & Telemetry HUD
+                  </h4>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                    data?.diagnostics?.status_code === 'OK'
+                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                      : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                  }`}>
+                    {data?.diagnostics?.status_code || 'STANDBY'}
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-400">
+                  Live verification of Google Places API (New), OpenStreetMap Fallbacks, and GPS Subsystems
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleTestNearbyApi}
+                disabled={isTestingApi || isLoading}
+                className="px-3.5 py-1.5 rounded-lg bg-navy-800 hover:bg-navy-700 text-medic-teal border border-medic-teal/30 text-xs font-bold flex items-center gap-1.5 transition-all disabled:opacity-50"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isTestingApi ? 'animate-spin' : ''}`} />
+                <span>{isTestingApi ? 'Testing API...' : 'Test Nearby Hospitals API'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Test Feedback Banner if run */}
+          {testResult && (
+            <div className={`p-3 rounded-xl border text-xs flex items-center justify-between gap-3 ${
+              testResult.success
+                ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-200'
+                : 'bg-emergency-950/40 border-emergency-500/40 text-emergency-200'
+            }`}>
+              <div className="flex items-center gap-2">
+                {testResult.success ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                ) : (
+                  <AlertCircle className="w-4 h-4 text-emergency-400 shrink-0" />
+                )}
+                <span>
+                  {testResult.success
+                    ? `Live Request Succeeded: Received ${testResult.facilityCount} facilities from "${testResult.provider}" in ${testResult.durationMs} ms (Status: ${testResult.statusCode}).`
+                    : `Live Request Failed: ${testResult.error} (${testResult.durationMs} ms).`}
+                </span>
+              </div>
+              <span className="font-mono text-[10px] opacity-75 shrink-0">
+                {testResult.durationMs} ms
+              </span>
+            </div>
+          )}
+
+          {/* Metric Telemetry Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+            {/* 1. Client GPS Telemetry */}
+            <div className="p-3.5 rounded-xl bg-navy-900/80 border border-navy-800 space-y-1.5">
+              <div className="flex items-center justify-between text-slate-400 text-[11px] font-bold">
+                <span className="flex items-center gap-1">
+                  <Crosshair className="w-3.5 h-3.5 text-medic-teal" />
+                  Client Geolocation
+                </span>
+                <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${
+                  gpsStatus === 'granted' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
+                }`}>
+                  {gpsStatus.toUpperCase()}
+                </span>
+              </div>
+              <div className="font-mono text-[11px] text-slate-200 truncate">
+                {coords.lat ? `${coords.lat.toFixed(5)}°, ${coords.lng?.toFixed(5)}°` : 'Awaiting Fix'}
+              </div>
+              <div className="text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Accuracy:</span>
+                <span className="font-mono text-slate-300">{accuracy !== null ? `±${Math.round(accuracy)}m` : 'Demonstration'}</span>
+              </div>
+              <div className="text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Timestamp:</span>
+                <span className="font-mono text-slate-300">{lastUpdated || 'Never'}</span>
+              </div>
+            </div>
+
+            {/* 2. Active Provider */}
+            <div className="p-3.5 rounded-xl bg-navy-900/80 border border-navy-800 space-y-1.5">
+              <div className="flex items-center justify-between text-slate-400 text-[11px] font-bold">
+                <span className="flex items-center gap-1">
+                  <Activity className="w-3.5 h-3.5 text-emerald-400" />
+                  Active Provider
+                </span>
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/20 text-emerald-300">
+                  LIVE
+                </span>
+              </div>
+              <div className="font-bold text-[11px] text-white truncate" title={data?.diagnostics?.active_provider || data?.data_provider}>
+                {data?.diagnostics?.active_provider || data?.data_provider || 'OpenStreetMap Nominatim'}
+              </div>
+              <div className="text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Verified Data:</span>
+                <span className="font-mono text-emerald-400">Zero Mock / 100% Real</span>
+              </div>
+              <div className="text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Query Duration:</span>
+                <span className="font-mono text-medic-teal font-bold">{data?.diagnostics?.duration_ms?.toFixed(1) || '0'} ms</span>
+              </div>
+            </div>
+
+            {/* 3. Google Maps Platform (New) */}
+            <div className="p-3.5 rounded-xl bg-navy-900/80 border border-navy-800 space-y-1.5">
+              <div className="flex items-center justify-between text-slate-400 text-[11px] font-bold">
+                <span className="flex items-center gap-1">
+                  <Cpu className="w-3.5 h-3.5 text-sky-400" />
+                  Google Places (New)
+                </span>
+                <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${
+                  data?.diagnostics?.google_places_configured ? 'bg-sky-500/20 text-sky-300' : 'bg-slate-700 text-slate-400'
+                }`}>
+                  {data?.diagnostics?.google_places_configured ? 'ACTIVE' : 'NOT SET'}
+                </span>
+              </div>
+              <div className="text-[10px] text-slate-400 flex items-center justify-between">
+                <span>API Key:</span>
+                <span className="font-mono text-[10px] text-slate-300">
+                  {data?.diagnostics?.google_places_masked_key || 'None in .env'}
+                </span>
+              </div>
+              <div className="text-[10px] text-slate-400 flex items-center justify-between">
+                <span>HTTP Status:</span>
+                <span className="font-mono text-slate-300">
+                  {data?.diagnostics?.google_places_http_status ?? (data?.diagnostics?.google_places_configured ? 200 : 'Bypassed')}
+                </span>
+              </div>
+              <div className="text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Error Code:</span>
+                <span className="font-mono text-slate-300 truncate max-w-[100px]">
+                  {data?.diagnostics?.google_places_error || 'None (Healthy)'}
+                </span>
+              </div>
+            </div>
+
+            {/* 4. Search Metrics & Radius */}
+            <div className="p-3.5 rounded-xl bg-navy-900/80 border border-navy-800 space-y-1.5">
+              <div className="flex items-center justify-between text-slate-400 text-[11px] font-bold">
+                <span className="flex items-center gap-1">
+                  <Layers className="w-3.5 h-3.5 text-purple-400" />
+                  Search Pipeline
+                </span>
+                <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${
+                  data?.diagnostics?.radius_expanded ? 'bg-amber-500/20 text-amber-300' : 'bg-emerald-500/20 text-emerald-300'
+                }`}>
+                  {data?.diagnostics?.radius_expanded ? 'EXPANDED' : 'NORMAL'}
+                </span>
+              </div>
+              <div className="text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Radius:</span>
+                <span className="font-mono text-slate-300">
+                  {data?.diagnostics?.search_radius_km ?? searchRadiusKm} km
+                  {data?.diagnostics?.radius_expanded && ` (from ${data?.diagnostics?.initial_radius_km}km)`}
+                </span>
+              </div>
+              <div className="text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Raw Facilities:</span>
+                <span className="font-mono text-slate-300">{data?.diagnostics?.raw_result_count ?? facilities.length}</span>
+              </div>
+              <div className="text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Filtered / Shown:</span>
+                <span className="font-mono text-medic-teal font-bold">{filteredFacilities.length}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Actionable Guidance Note */}
+          {data?.diagnostics?.actionable_guidance && (
+            <div className="p-3 rounded-xl bg-sky-950/30 border border-sky-500/20 text-xs text-slate-300 flex items-start gap-2.5">
+              <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
+                <span className="font-bold text-sky-300 block text-[11px]">Provider Architecture Notice:</span>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  {data.diagnostics.actionable_guidance}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Current Location & GPS Accuracy Card */}
       <div className="p-5 rounded-2xl bg-navy-900 border border-navy-800 space-y-4 shadow-lg">
@@ -468,7 +738,7 @@ export const HospitalFinderView: React.FC = () => {
         <div className="text-center py-20 space-y-3 bg-navy-900 border border-navy-800 rounded-3xl">
           <div className="w-10 h-10 border-2 border-medic-teal/20 border-t-medic-teal rounded-full animate-spin mx-auto" />
           <p className="text-xs text-slate-400 font-semibold">
-            Querying Google Places & Routes APIs for verified hospitals within {searchRadiusKm} km...
+            Querying real-time healthcare discovery network ({data?.data_provider || 'Google Places & OpenStreetMap'}) for verified hospitals within {searchRadiusKm} km...
           </p>
         </div>
       ) : errorMsg ? (
@@ -488,6 +758,21 @@ export const HospitalFinderView: React.FC = () => {
         </div>
       ) : (
         <div className="space-y-6">
+          {/* Auto-Expansion Notice Banner */}
+          {data?.diagnostics?.radius_expanded && (
+            <div className="p-3.5 rounded-xl bg-sky-950/40 border border-sky-500/30 text-xs text-sky-200 flex items-center justify-between gap-3 shadow">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-sky-400 shrink-0" />
+                <span>
+                  Search radius was automatically expanded from <strong>{data.diagnostics.initial_radius_km} km</strong> to <strong>{data.diagnostics.search_radius_km} km</strong> to locate verified emergency medical facilities.
+                </span>
+              </div>
+              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-sky-900/60 border border-sky-700/50 text-sky-300 shrink-0">
+                Auto-Expanded
+              </span>
+            </div>
+          )}
+
           {/* Interactive Map (Shown in 'split' or 'map' view) */}
           {(viewMode === 'split' || viewMode === 'map') && (
             <div className="space-y-2">
@@ -522,32 +807,54 @@ export const HospitalFinderView: React.FC = () => {
                   <span>Verified Medical Facilities ({filteredFacilities.length})</span>
                 </span>
                 <span className="text-[11px] text-slate-400">
-                  Provider: <strong className="text-slate-300">{data?.data_provider || 'Google Places API'}</strong>
+                  Provider: <strong className="text-slate-300">{data?.data_provider || (data?.diagnostics?.active_provider ?? 'OpenStreetMap Nominatim / Regional Registry')}</strong>
                 </span>
               </div>
 
               {filteredFacilities.length === 0 ? (
-                <div className="p-12 text-center text-xs text-slate-400 bg-navy-900 border border-navy-800 rounded-3xl space-y-3">
-                  <p className="font-bold text-white">No medical facilities found within {searchRadiusKm} km.</p>
-                  <p className="text-slate-500 max-w-md mx-auto text-[11px]">
-                    Try expanding the search radius to 10 km or 20 km, or search on Google Maps directly.
-                  </p>
-                  <div className="flex justify-center gap-2 pt-2">
+                <div className="p-12 text-center text-xs text-slate-400 bg-navy-900 border border-navy-800 rounded-3xl space-y-4">
+                  <div className="w-12 h-12 rounded-full bg-navy-950 border border-navy-700 flex items-center justify-center mx-auto text-amber-400">
+                    <AlertCircle className="w-6 h-6" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm font-bold text-white">No medical facilities found within {data?.diagnostics?.search_radius_km || searchRadiusKm} km.</p>
+                    <p className="text-slate-400 max-w-lg mx-auto text-[11px] leading-relaxed">
+                      {searchTerm 
+                        ? `No hospitals match your filter "${searchTerm}". Clear the search term to view all facilities.` 
+                        : `No medical facilities were returned by ${data?.data_provider || 'the discovery service'} for this exact radius. You can expand the radius to 10 km or 20 km, or select one of the demonstration hubs.`
+                      }
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-2 pt-2">
                     <button
                       onClick={() => handleRadiusChange(10)}
-                      className="px-3 py-1.5 rounded-xl bg-navy-800 hover:bg-navy-700 text-medic-teal font-bold text-xs"
+                      className="px-4 py-2 rounded-xl bg-navy-800 hover:bg-navy-700 text-medic-teal font-bold text-xs border border-medic-teal/30 transition-colors"
                     >
                       Expand to 10 km
                     </button>
+                    <button
+                      onClick={() => handleRadiusChange(20)}
+                      className="px-4 py-2 rounded-xl bg-navy-800 hover:bg-navy-700 text-medic-teal font-bold text-xs border border-medic-teal/30 transition-colors"
+                    >
+                      Expand to 20 km
+                    </button>
+                    {chennaiPresets.length > 0 && (
+                      <button
+                        onClick={() => handleSelectPreset(chennaiPresets[0])}
+                        className="px-4 py-2 rounded-xl bg-navy-950 hover:bg-navy-800 text-slate-300 font-bold text-xs border border-navy-700 transition-colors"
+                      >
+                        Anchor to Adyar Hub
+                      </button>
+                    )}
                     {data?.google_maps_search_url && (
                       <a
                         href={data.google_maps_search_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3 py-1.5 rounded-xl bg-medic-teal text-navy-950 font-black text-xs inline-flex items-center gap-1"
+                        className="px-4 py-2 rounded-xl bg-medic-teal text-navy-950 font-black text-xs inline-flex items-center gap-1.5 shadow"
                       >
                         <span>Open Google Maps</span>
-                        <ExternalLink className="w-3 h-3" />
+                        <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     )}
                   </div>

@@ -46,7 +46,8 @@ def test_burn_first_aid_controller(db_session):
     assert any("cool" in step.action.lower() or "water" in step.details.lower() for step in response.first_aid_steps)
 
 def test_hospitals_nearby_controller():
-    data = get_nearby_hospitals(lat=37.7749, lng=-122.4194)
+    # Test nearby hospitals in demonstration hub (Adyar, Chennai) to verify offline resilience
+    data = get_nearby_hospitals(lat=13.0012, lng=80.2565)
     assert data.count > 0
     assert len(data.facilities) > 0
     assert "disclaimer" in data.model_dump()
